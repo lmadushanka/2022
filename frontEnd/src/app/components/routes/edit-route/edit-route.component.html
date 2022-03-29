@@ -1,0 +1,93 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <button type="button" routerLink="/dashboard/route"
+                            class="btn btn-block btn-outline-primary">View
+                            Routes</button>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/route">Route</a></li>
+                        <li class="breadcrumb-item active">Edit Route</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Route Form</h3>
+                        </div>
+
+
+                        <form id="quickForm" novalidate="novalidate" autocomplete="off">
+                            <div class="card-body">
+
+                                <div class="row mb-2">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="routeNumber">Route Number</label>
+                                            <input type="text" name="routeNumber" class="form-control" id="routeNumber"
+                                                placeholder="Enter Route Number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="routeName">Route Name</label>
+                                            <input type="text" name="routeName" class="form-control" id="routeName"
+                                                placeholder="Enter Route Name">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="cities">Cities</label>
+                                            <textarea class="form-control" rows="3"
+                                                placeholder="Enter Cities ..."></textarea>
+                                            <p>Comma separated values Example: Embilipitiya, Middeniya, Thangalla</p>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
