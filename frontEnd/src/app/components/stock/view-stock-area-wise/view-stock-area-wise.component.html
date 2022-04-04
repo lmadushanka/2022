@@ -1,0 +1,108 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <button type="button" routerLink="/dashboard/stock"
+                                class="btn btn-sm btn-block btn-outline-primary">view</button>
+                        </div>
+
+                        <div class="col-sm-3"></div>
+
+
+                    </div>
+
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/stock">stock</a></li>
+                        <li class="breadcrumb-item active">Area wise Stock</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row">
+                <div style="margin: auto;" class="col-sm-3">
+                    <div class="form-group">
+                        <select (change)="onSelectRoute($event)" class="form-control">
+                            <option value="0">Main Stock</option>
+                            <option *ngFor="let arr of routeArray" value="{{arr.id}}">
+                                {{arr.routeName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Stock Table</h3>
+
+
+
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" [(ngModel)]="searchText" name="search"
+                                        class="form-control float-right" placeholder="Search">
+
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Product Code</th>
+                                        <th>Product Name</th>
+                                        <th>Current Stock</th>
+                                        <th width="15%">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="dataArrayLength == 0">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No data found</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngFor="let arr of dataArray | filter:searchText">
+
+                                    <tr>
+                                        <td>{{arr.productCode}}</td>
+                                        <td>{{arr.productName}}</td>
+                                        <td>{{arr.stock}}</td>
+                                        <td>{{arr.added_at}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

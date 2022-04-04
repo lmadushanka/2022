@@ -1,0 +1,96 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <button type="button" routerLink="/dashboard/stock"
+                            class="btn btn-block btn-sm btn-outline-primary">View
+                        </button>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/stock">stock</a></li>
+                        <li class="breadcrumb-item active">Add Stock</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Stock Form</h3>
+                        </div>
+
+
+                        <div class="container">
+
+                            <br>
+
+                            <form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+
+                                <table class="table table-bordered" formArrayName="stock">
+                                    <tr>
+                                        <th colspan="2"></th>
+                                        <th width="50px"><button style="margin: auto;" type="button"
+                                                (click)="addQuantity()" class="btn btn-primary">Add</button></th>
+                                    </tr>
+                                    <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
+                                        <td>
+                                            Select Product :
+                                            <select formControlName="productId" class="form-control">
+                                                <option *ngFor="let arr of productArray" value="{{arr.id}}">
+                                                    {{arr.productName}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            Stock Amount:
+                                            <input required="" type="text" formControlName="stockAmount"
+                                                class="form-control">
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+
+                                <div class="card-footer">
+                                    <button style="text-align: center;" type="submit"
+                                        class="btn btn-success">Submit</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+                <div class="col-md-6">
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

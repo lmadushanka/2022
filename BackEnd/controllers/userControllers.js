@@ -124,18 +124,10 @@ deleteUserById = async (req, res) => {
                 msg: "DB Error"
             });
         }
-
-        if (!results) {
-            return res.status(500).json({
-                success: 0,
-                msg: "Record not found"
-            });
-        } else {
             return res.status(200).json({
                 success: 1,
                 data: results
             });
-        }
 
     });
 }

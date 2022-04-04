@@ -6,15 +6,15 @@
                 <div class="col-sm-6">
                     <div class="col-sm-2">
                         <button type="button" routerLink="/dashboard/customer"
-                            class="btn btn-block btn-outline-primary">View
-                            Customer</button>
+                            class="btn btn-block btn-sm btn-outline-primary">View
+                        </button>
                     </div>
 
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a routerLink="/dashboard/customer">istomer</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/customer">Customer</a></li>
                         <li class="breadcrumb-item active">Add Customer</li>
                     </ol>
                 </div>
@@ -35,83 +35,121 @@
                         </div>
 
 
-                        <form id="quickForm" novalidate="novalidate" autocomplete="off">
+                        <form #customerForm='ngForm'>
                             <div class="card-body">
 
-                                <div class="row mb-2">
-                                    <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="businessName">Business Name</label>
-                                            <input type="text" name="businessName" class="form-control"
-                                                id="businessName" placeholder="Enter Business Name">
+                                            <input type="text" required name="businessName" class="form-control" id="businessName" placeholder="Enter Business Name"
+                                                ngModel #businessName="ngModel" [(ngModel)]="customerModule.businessName" [class.is-invalid]="businessName.invalid">
+                                            
+                                            <span style="color: red; font-size: 12px;" *ngIf="businessName.invalid">Business Name is
+                                                required</span>
                                         </div>
+                                    </div>
+                                    
+                                    <div class="col">
+
                                         <div class="form-group">
                                             <label for="customerName">Customer Name</label>
-                                            <input type="text" name="customerName" class="form-control"
-                                                id="customerName" placeholder="Enter Customer Name">
+                                            <input type="text" required name="customerName" class="form-control" id="customerName" placeholder="Enter Customer Name"
+                                                ngModel #customerName='ngModel' [(ngModel)]="customerModule.customerName" [class.is-invalid]='customerName.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="customerName.invalid">Customer Name is
+                                                required</span>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            <hr style="border-color: black;">
+                                
+                                <div class="row">
+                                    <div class="col">
+
+                                        <div class="form-group">
+                                            <label for="mobileNumber">Mobile Number</label>
+                                            <input type="text" required name="mobileNumber" class="form-control" id="mobileNumber" placeholder="Enter Mobile Number"
+                                                ngModel #mobileNumber='ngModel' [(ngModel)]="customerModule.mobileNumber" [class.is-invalid]='mobileNumber.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="mobileNumber.invalid">Mobile Number is
+                                                required</span>
                                         </div>
                                     </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="landLine">LandLine Number</label>
+                                            <input type="text" name="landLine" class="form-control" id="landLine" placeholder="Enter LandLine Number" ngModel
+                                                #landLine='ngModel' [(ngModel)]="customerModule.landLine">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="alternateNumber">Alternate Number</label>
+                                            <input type="text" name="alternateNumber" class="form-control" id="alternateNumber" placeholder="Enter Alternate Number"
+                                                ngModel #alternateNumber='ngModel' [(ngModel)]="customerModule.alternateNumber"
+                                                [class.is-invalid]='alternateNumber.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="alternateNumber.invalid">Alternate Number is
+                                                required</span>
+
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <hr style="border-color: black;">
+                                    
+                                    <div class="row">
+                                    
+                                        <div class="col">
+
+                                            <div class="form-group">
+                                                <label for="city">City</label>
+                                                <input type="text" required name="city" class="form-control" id="city" placeholder="Enter City" ngModel #city='ngModel'
+                                                    [(ngModel)]="customerModule.city" [class.is-invalid]='city.invalid'>
+                                                <span style="color: red; font-size: 12px;" *ngIf="city.invalid">City is
+                                                    required</span>
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="address">Address</label>
+                                                        <input type="text" required name="address" class="form-control" id="address" placeholder="Enter Address" ngModel
+                                                            #address='ngModel' [(ngModel)]="customerModule.address" [class.is-invalid]='address.invalid'>
+                                                        <span style="color: red; font-size: 12px;" *ngIf="address.invalid">Address is
+                                                            required</span>
+                                            </div>
+                                            </div>
 
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label for="mobileNumber">Mobile Number</label>
-                                            <input type="text" name="mobileNumber" class="form-control"
-                                                id="mobileNumber" placeholder="Enter Mobile Number">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="address">Address</label>
-                                            <input type="text" name="address" class="form-control" id="address"
-                                                placeholder="Enter Address">
-                                        </div>
-                                    </div>
+                                            <label for="email">Email</label>
+                                            <input type="email" required name="email" class="form-control" id="email" placeholder="Enter Email" ngModel
+                                                #email='ngModel' [(ngModel)]="customerModule.email" [class.is-invalid]='email.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="email.invalid">Email is
+                                                required</span>
+                                            </div>
+                                            </div>
 
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label for="mobileNumber">Mobile Number</label>
-                                            <input type="text" name="mobileNumber" class="form-control"
-                                                id="mobileNumber" placeholder="Enter Mobile Number">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Route</label>
-                                            <select class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                 </div>
 
-                                <hr>
-
-                                <div class="row mb-2">
-                                    <div style="margin: 0 auto;" class="col-sm-4">
+                                <hr style="border-color: black;">
+                                
+                                <div class="row">
+                                
+                                
+                                    <div style="margin: auto;" class="col-sm-4">
                                         <div class="form-group">
-                                            <label>User Role</label>
-                                            <select class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <input type="password" name="password" class="form-control" id="password"
-                                                placeholder="Enter Password">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="confirmPassword">Confirm Password</label>
-                                            <input type="password" name="confirmPassword" class="form-control"
-                                                id="confirmPassword" placeholder="Enter Confirm Password">
+                                            <label for="creditLimit">Credit Limit</label>
+                                            <input type="text" required name="creditLimit" class="form-control" id="creditLimit" placeholder="Enter Credit Limit"
+                                                ngModel #creditLimit='ngModel' [(ngModel)]="customerModule.creditLimit" [class.is-invalid]='creditLimit.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="creditLimit.invalid">Credit Limit is
+                                                required</span>
                                         </div>
                                     </div>
+
                                 </div>
+
+
 
 
 
@@ -119,7 +157,8 @@
                             </div>
 
                             <div class="card-footer">
-                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                                <button [disabled]="customerForm.form.invalid" (click)="addCustomer()" style="float: right;" type="submit"
+                                    class="btn btn-info">Submit</button>
                             </div>
                         </form>
                     </div>

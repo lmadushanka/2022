@@ -32,7 +32,7 @@ const create = (data, callBack) => {
 
 const getAllCustomer = callBack => {
     con.query(
-        `SELECT * FROM customer`,
+        `SELECT * FROM customer WHERE status = 1`,
         [],
         (err, results, fields) => {
             if (err) {
@@ -46,7 +46,7 @@ const getAllCustomer = callBack => {
 
 const getWithoutOne = (id, callBack) => {
     con.query(
-        `SELECT * FROM customer WHERE id != ?`,
+        `SELECT * FROM customer WHERE id != ? AND status = 1`,
         [id],
         (err, results, fields) => {
             if (err) {
@@ -101,10 +101,27 @@ const update = (data, callBack) => {
     )
 }
 
+const deleteCustomer = (data, callBack) => {
+    con.query(
+        `UPDATE customer SET status = 0  WHERE id=?`,
+        [
+            data
+        ],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+
+            return callBack(null, results)
+        }
+    )
+}
+
 module.exports = {
     create,
     getAllCustomer,
     update,
     getWithoutOne,
-    getById
+    getById,
+    deleteCustomer
 }

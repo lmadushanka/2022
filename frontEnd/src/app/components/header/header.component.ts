@@ -10,6 +10,9 @@ import { AuthService } from '../../services/auth-service/auth.service'
 })
 export class HeaderComponent implements OnInit {
 
+  userName:any;
+  userRole:any;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -17,6 +20,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkValidation();
+
+    this.userName = localStorage.getItem('userName');
+    this.userRole = localStorage.getItem('userRole');
   }
 
   checkValidation(){

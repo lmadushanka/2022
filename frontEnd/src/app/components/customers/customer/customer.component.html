@@ -6,8 +6,7 @@
                 <div class="col-sm-6">
                     <div class="col-sm-2">
                         <button type="button" routerLink="/dashboard/add-customer"
-                            class="btn btn-block btn-outline-primary">Add
-                            Customer</button>
+                            class="btn btn-block btn-sm btn-outline-primary">Add</button>
                     </div>
 
                 </div>
@@ -31,7 +30,7 @@
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="search" class="form-control float-right"
+                                    <input type="text" [(ngModel)]="searchText" name="search" class="form-control float-right"
                                         placeholder="Search">
 
                                     <div class="input-group-append">
@@ -48,30 +47,49 @@
                                 <thead>
                                     <tr>
                                         <th>Business Name</th>
-                                        <th>Customer Name</th>
                                         <th>Mobile</th>
                                         <th>Alternate</th>
                                         <th>LandLine</th>
                                         <th>Route</th>
                                         <th>City</th>
                                         <th>Address</th>
-                                        <th>Email</th>
                                         <th>Credit Limit</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="dataArrayLength == 0">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No data found</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngFor="let arr of dataArray | filter:searchText">
 
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{arr.businessName}}</td>
+                                        <td>{{arr.mobileNumber}}</td>
+                                        <td>{{arr.alternateNumber}}</td>
+                                        <td>{{arr.landLine}}</td>
+                                        <td>{{arr.routeName}}</td>
+                                        <td>{{arr.city}}</td>
+                                        <td>{{arr.address}}</td>
+                                        <td>{{arr.creditLimit}}</td>
+                                        <td>
+                                            <div class="row">
+                                        
+                                                <div class="col">
+                                                    <button type="button" (click)="editCustomer(arr.id)" class="btn btn-block btn-sm btn-outline-success"><i
+                                                            class="nav-icon fas fa-pen"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button type="button" (click)="deleteCustomer(arr.id,arr.businessName)"
+                                                        class="btn btn-block btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                        
+                                        
+                                            </div>
+                                        
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

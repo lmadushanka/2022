@@ -6,8 +6,8 @@
                 <div class="col-sm-6">
                     <div class="col-sm-2">
                         <button type="button" routerLink="/dashboard/add-user"
-                            class="btn btn-block btn-outline-primary">Add
-                            User</button>
+                            class="btn btn-block btn-sm btn-outline-primary">Add
+                            </button>
                     </div>
 
                 </div>
@@ -31,7 +31,7 @@
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="search" class="form-control float-right"
+                                    <input type="text" [(ngModel)]="searchText" name="search" class="form-control float-right"
                                         placeholder="Search">
 
                                     <div class="input-group-append">
@@ -56,16 +56,41 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="dataArrayLength == 0">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No data found</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngFor="let arr of dataArray | filter:searchText">
 
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{arr.shortName}}</td>
+                                        <td>{{arr.mobileNumber}}</td>
+                                        <td>{{arr.email}}</td>
+                                        <td>{{arr.address}}</td>
+                                        <td *ngIf="arr.userRole == 0">Super Admin</td>
+                                        <td *ngIf="arr.userRole == 3">Admin</td>
+                                        <td *ngIf="arr.userRole == 2">Manager</td>
+                                        <td *ngIf="arr.userRole == 1">Sales Rep</td>
+                                        <td>{{arr.route}}</td>
+                                        <td>
+                                            <div class="row">
+                                        
+                                                <div class="col">
+                                                    <button type="button" (click)="editUser(arr.id)" class="btn btn-block btn-sm btn-outline-success"><i
+                                                            class="nav-icon fas fa-pen"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button type="button" (click)="deleteUser(arr.id,arr.shortName)"
+                                                        class="btn btn-block btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                        
+                                        
+                                            </div>
+                                        
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

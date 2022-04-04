@@ -126,7 +126,7 @@
                     <img src="../../../assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block">{{userName}}</a>
                 </div>
             </div>
 
@@ -135,7 +135,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
 
-                    <li class="nav-item menu-open">
+                    <li *ngIf="userRole == 0" class="nav-item menu-open">
                         <a routerLink="/dashboard/home" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
@@ -144,7 +144,7 @@
                         </a>
 
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="userRole == 0" class="nav-item">
                         <a routerLink="/dashboard/user" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -153,7 +153,7 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="userRole == 0" class="nav-item">
                         <a routerLink="/dashboard/route" class="nav-link">
                             <i class="nav-icon fas fa-route"></i>
                             <p>
@@ -163,7 +163,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <li *ngIf="userRole == 0" class="nav-item">
                         <a routerLink="/dashboard/customer" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
@@ -173,6 +173,33 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a routerLink="/dashboard/product" class="nav-link">
+                            <i class="nav-icon fas fa-box"></i>
+                            <p>
+                                Product
+                                <!-- <span class="right badge badge-danger">New</span> -->
+                            </p>
+                        </a>
+                        </li>
+                        <li *ngIf="userRole == 0" class="nav-item">
+                            <a routerLink="/dashboard/stock" class="nav-link">
+                                <i class="nav-icon fas fa-boxes"></i>
+                                <p>
+                                    Stock
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li *ngIf="userRole == 0" class="nav-item">
+                            <a routerLink="/dashboard/stockTransfer" class="nav-link">
+                                <i class="nav-icon fas fa-truck"></i>
+                                <p>
+                                    Stock Transfer
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-copy"></i>
                             <p>
@@ -231,8 +258,8 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
+                    </li> -->
+                    <!-- <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <p>
@@ -745,7 +772,7 @@
                             <i class="fas fa-circle nav-icon"></i>
                             <p>Level 1</p>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-header">LABELS</li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">

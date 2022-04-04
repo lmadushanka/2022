@@ -18,10 +18,26 @@ const create = (data, callBack) => {
     )
 }
 
-const getOneRoute = (routeNumber, callBack) => {
+const getOneRouteByid = (id, callBack) => {
     con.query(
-        `SELECT * FROM routes WHERE routeNumber = ?`,
-        [routeNumber],
+        `SELECT * FROM routes WHERE id = ?`,
+        [id],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+            return callBack(null, results[0]);
+        }
+    )
+}
+
+const getOneRoute = (data, callBack) => {
+    con.query(
+        `SELECT * FROM routes WHERE routeNumber = ? OR routeName = ?`,
+        [
+            data.routeNumber,
+            data.routeName
+        ],
         (err, results, fields) => {
             if (err) {
                 return callBack(err);
@@ -94,5 +110,6 @@ module.exports = {
     getAll,
     deleteById,
     update,
-    getAllWithoutOne
+    getAllWithoutOne,
+    getOneRouteByid
 }

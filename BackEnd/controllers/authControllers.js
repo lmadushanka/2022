@@ -28,6 +28,7 @@ const login = async (req, res) => {
             return res.json({
                 success: 1,
                 msg: "Login Success!",
+                data: results,
                 token: jsontoken
             });
 

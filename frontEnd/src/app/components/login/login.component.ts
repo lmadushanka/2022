@@ -26,6 +26,10 @@ export class LoginComponent implements OnInit {
   singIn(){
     this.authService.signIn(this.loginModule).subscribe((res) =>{
       localStorage.setItem('token', res.token);
+
+      localStorage.setItem('userName', res.data.shortName);
+      localStorage.setItem('userRole', res.data.userRole);
+      
       if(res.success == 1){
         this.router.navigate(['dashboard/home']).then(()=>{
           window.location.reload();

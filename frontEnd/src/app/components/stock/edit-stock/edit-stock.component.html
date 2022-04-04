@@ -1,0 +1,88 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <button type="button" routerLink="/dashboard/stock"
+                            class="btn btn-block btn-sm btn-outline-primary">View
+                        </button>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/stock">stock</a></li>
+                        <li class="breadcrumb-item active">Edit Stock</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Stock Edit Form</h3>
+                        </div>
+
+
+                        <form id="quickForm" novalidate="novalidate" autocomplete="off">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Route</label>
+                                            <select class="form-control">
+                                                <option>option 1</option>
+                                                <option>option 2</option>
+                                                <option>option 3</option>
+                                                <option>option 4</option>
+                                                <option>option 5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+
+                                        <div class="form-group">
+                                            <label for="stockAmount">Stock Amount</label>
+                                            <input type="text" name="stockAmount" class="form-control" id="stockAmount"
+                                                placeholder="Enter Stock Amount">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+
+                            <div class="card-footer">
+                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

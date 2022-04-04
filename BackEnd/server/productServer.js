@@ -23,13 +23,23 @@ const create = (data, callBack) => {
 
 }
 
-const getOne = (data, callBack) => {
+const getOne = (id, callBack) => {
     con.query(
-        `SELECT * FROM products WHERE productCode = ? OR productName =?`,
-        [
-            data.productCode,
-            data.productName
-        ],
+        `SELECT * FROM products WHERE id = ?`,
+        [id],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+            return callBack(null, results[0]);
+        }
+    )
+}
+
+const checkDuplicated = (data, callBack) => {
+    con.query(
+        `SELECT * FROM products WHERE productCode = ?`,
+        [data.productCode],
         (err, results, fields) => {
             if (err) {
                 return callBack(err);
@@ -92,5 +102,6 @@ module.exports = {
     getOne,
     getAll,
     update,
-    deleteOne
+    deleteOne,
+    checkDuplicated
 }

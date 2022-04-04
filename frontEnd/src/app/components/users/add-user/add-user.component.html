@@ -6,8 +6,8 @@
                 <div class="col-sm-6">
                     <div class="col-sm-2">
                         <button type="button" routerLink="/dashboard/user"
-                            class="btn btn-block btn-outline-primary">View
-                            User</button>
+                            class="btn btn-block btn-sm btn-outline-primary">View
+                        </button>
                     </div>
 
                 </div>
@@ -35,80 +35,130 @@
                         </div>
 
 
-                        <form id="quickForm" novalidate="novalidate" autocomplete="off">
+                        <form #userForm="ngForm">
                             <div class="card-body">
 
-                                <div class="row mb-2">
-                                    <div class="col-sm-4">
+                                <div class="row">
+                                
+                                    <div class="col">
+
                                         <div class="form-group">
                                             <label for="fullName">Full Name</label>
-                                            <input type="text" name="fullName" class="form-control" id="fullName"
-                                                placeholder="Enter Full Name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="email" name="email" class="form-control" id="email"
-                                                placeholder="Enter Email Address">
+                                            <input type="text" name="fullName" required class="form-control" id="fullName" #fullName="ngModel"
+                                                [class.is-invalid]="fullName.invalid" ngModel [(ngModel)]="userModule.fullName" placeholder="Enter Full Name">
+                                            <span style="color: red; font-size: 12px;" *ngIf="fullName.invalid">Full
+                                                Name is
+                                                required</span>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="shortName">Short Name</label>
-                                            <input type="text" name="shortName" class="form-control" id="shortName"
-                                                placeholder="Enter Short Name">
+                                            <input type="text" name="shortName" required="" class="form-control" id="shortName" #shortName="ngModel"
+                                                [class.is-invalid]="shortName.invalid" ngModel [(ngModel)]="userModule.shortName" placeholder="Enter Short Name">
+                                            <span style="color: red; font-size: 12px;" *ngIf="fullName.invalid">Short
+                                                Name is
+                                                required</span>
                                         </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="">Email</label>
+                                                <input required [class.is-invalid]="email.invalid" [(ngModel)]="userModule.email" #email="ngModel"
+                                                    name="email" type="email" id="email" class="form-control" id="exampleInputEmail1"
+                                                    placeholder="Enter Email">
+                                    
+                                                <div *ngIf="email.invalid">
+                                                    <small style="color: red; font-size: 12px;">Invalid Email
+                                                        Address</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
                                         <div class="form-group">
                                             <label for="address">Address</label>
-                                            <input type="text" name="address" class="form-control" id="address"
+                                            <input required [class.is-invalid]="address.invalid" [(ngModel)]="userModule.address" #address="ngModel" type="text"
+                                                name="address" class="form-control" id="address"
                                                 placeholder="Enter Address">
+                                            <span style="color: red; font-size: 12px;" *ngIf="address.invalid">Full
+                                                Address is
+                                                required</span>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="mobileNumber">Mobile Number</label>
-                                            <input type="text" name="mobileNumber" class="form-control"
-                                                id="mobileNumber" placeholder="Enter Mobile Number">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Route</label>
-                                            <select class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
-                                            </select>
+                                            <input required [class.is-invalid]="mobileNumber.invalid" [(ngModel)]="userModule.mobileNumber" #mobileNumber="ngModel"
+                                                type="text" name="mobileNumber" class="form-control" id="mobileNumber" placeholder="Enter Mobile Number">
+                                            <span style="color: red; font-size: 12px;" *ngIf="mobileNumber.invalid">Full
+                                                Mobile Number is
+                                                required</span>
                                         </div>
                                     </div>
+                                    
+                                    </div>
+                                    
+                                    <div class="row">
+                                    
+                                        <div style="margin: auto;" class="col-sm-4">
+
+                                        <div class="form-group">
+                                            <label>Route</label>
+                                            <select (change)="onSelectRoute($event)" class="form-control">
+                                                <option value="">Select Route</option>
+                                                <option *ngFor="let arr of routeArray" value="{{arr.id}}">
+                                                    {{arr.routeName}}</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
-                                <hr>
+                                <hr style="border-color: black;">
 
                                 <div class="row mb-2">
                                     <div style="margin: 0 auto;" class="col-sm-4">
                                         <div class="form-group">
                                             <label>User Role</label>
-                                            <select class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
+                                            <select required (change)="onSelectUserRole($event)" class="form-control">
+                                                <option>Select User Role</option>
+                                                <option value="1">Sales Rep</option>
+                                                <option value="2">Manager</option>
+                                                <option value="3">Admin</option>
+                                                <option value="0">Super Admin</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="password" name="password" class="form-control" id="password"
+                                            <input required [class.is-invalid]="password.invalid" [(ngModel)]="userModule.password" #password="ngModel"
+                                                type="password" name="password" class="form-control" id="password"
                                                 placeholder="Enter Password">
+                                            <span style="color: red; font-size: 12px;" *ngIf="password.invalid">
+                                                Password is
+                                                required</span>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="confirmPassword">Confirm Password</label>
-                                            <input type="password" name="confirmPassword" class="form-control"
-                                                id="confirmPassword" placeholder="Enter Confirm Password">
+                                            <input (keyup)="checkPassword()" required [class.is-invalid]="cPassword.invalid" [(ngModel)]="confirmPassword"
+                                                #cPassword="ngModel" type="password" name="confirmPassword" class="form-control" id="confirmPassword"
+                                                placeholder="Enter Confirm Password">
+                                            <span style="color: red; font-size: 12px;" *ngIf="cPassword.invalid">Confirm
+                                                Password is
+                                                required</span>
+                                            
+                                            <span style="color: red; font-size: 12px;" *ngIf="checkPass == 0 && confirmPassword.length !=0 ">Confirm
+                                                Password not equal
+                                            </span>
+                                            
+                                            <span style="color: green; font-size: 12px;" *ngIf="checkPass == 1">Confirm
+                                                Confirmed Password</span>
                                         </div>
                                     </div>
                                 </div>
@@ -119,7 +169,8 @@
                             </div>
 
                             <div class="card-footer">
-                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                                <button [disabled]="userForm.form.invalid" (click)="addUser()" style="float: right;" type="submit"
+                                    class="btn btn-info">Submit</button>
                             </div>
                         </form>
                     </div>

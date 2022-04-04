@@ -1,7 +1,10 @@
-const { create, getAll, getOne, update, deleteOne, getRouteIdNull } = require('../server/stockServer');
+const { create, getAll, getOne, update, deleteOne, getRouteIdNull, getAllStockGroupByProduct, getStockByRouteId } = require('../server/stockServer');
+
 
 const createStock = (req, res) => {
     const body = req.body;
+
+    console.log(body);
 
     if (body.routeId == null) {
         body.routeId = 0;
@@ -22,6 +25,24 @@ const createStock = (req, res) => {
     });
 }
 
+
+const getAllStocksGroupByProductWise = (req, res) => {
+    getAllStockGroupByProduct((err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                msg: 'Server error'
+            })
+        }
+
+        return res.status(200).json({
+            success: 1,
+            data: results
+        });
+    })
+}
+
 const getAllStocks = (req, res) => {
     getAll((err, results) => {
         if (err) {
@@ -38,6 +59,7 @@ const getAllStocks = (req, res) => {
     })
 }
 
+
 const getStockById = (req, res) => {
     const id = req.params.id;
 
@@ -50,9 +72,37 @@ const getStockById = (req, res) => {
         }
 
         if (!results) {
+            return res.status(404).json({
+                success: 0,
+                msg: 'Record not found'
+            })
+        } else {
+            return res.status(200).json({
+                success: 1,
+                data: results
+            });
+        }
+
+
+    });
+}
+
+
+const getStockByRoute = (req, res) => {
+    const routeId = req.params.routeId;
+
+    getStockByRouteId(routeId, (err, results) => {
+        if (err) {
             return res.status(500).json({
                 success: 0,
-                msg: 'DB Error'
+                msg: 'Server error'
+            })
+        }
+
+        if (!results) {
+            return res.status(404).json({
+                success: 0,
+                msg: 'Record not found'
             })
         } else {
             return res.status(200).json({
@@ -88,6 +138,7 @@ const updateStock = (req, res) => {
 
     update(body, (err, results) => {
         if (err) {
+            console.log(err);
             return res.status(400).json({
                 success: 0,
                 msg: 'DB Error'
@@ -95,9 +146,9 @@ const updateStock = (req, res) => {
         }
 
         if (!results) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: 0,
-                msg: 'DB Error'
+                msg: 'Record not found'
             })
         } else {
             return res.status(200).json({
@@ -116,6 +167,7 @@ const deleteStock = (req, res) => {
 
     deleteOne(id, (err, results) => {
         if (err) {
+            console.log(err);
             return res.status(500).json({
                 success: 0,
                 msg: "DB Error"
@@ -123,9 +175,9 @@ const deleteStock = (req, res) => {
         }
 
         if (results.affectedRows == 0) {
-            return res.status(500).json({
+            return res.status(404).json({
                 success: 0,
-                msg: "DB Error"
+                msg: "Record not found"
             });
         } else {
             return res.status(200).json({
@@ -138,9 +190,11 @@ const deleteStock = (req, res) => {
 
 module.exports = {
     createStock,
+    getAllStocksGroupByProductWise,
     getAllStocks,
     getStockById,
     updateStock,
     deleteStock,
-    getMainStock
+    getMainStock,
+    getStockByRoute
 }

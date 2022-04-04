@@ -6,8 +6,8 @@
                 <div class="col-sm-6">
                     <div class="col-sm-2">
                         <button type="button" routerLink="/dashboard/route"
-                            class="btn btn-block btn-outline-primary">View
-                            Routes</button>
+                            class="btn btn-block btn-sm btn-outline-primary">View
+                            </button>
                     </div>
 
                 </div>
@@ -35,34 +35,43 @@
                         </div>
 
 
-                        <form id="quickForm" novalidate="novalidate" autocomplete="off">
+                        <form #routeForm=ngForm>
                             <div class="card-body">
 
                                 <div class="row mb-2">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="routeNumber">Route Number</label>
-                                            <input type="text" name="routeNumber" class="form-control" id="routeNumber"
-                                                placeholder="Enter Route Number">
-                                        </div>
+                                            <input required type="text" name="routeNumber" class="form-control" id="routeNumber" placeholder="Enter Route Number"
+                                                [class.is-invalid]="routeNumber.invalid" #routeNumber="ngModel" ngModel [(ngModel)]="routeModule.routeNumber">
+                                            <span style="color: red; font-size: 12px;" *ngIf="routeNumber.invalid">Route Number is
+                                                required</span>
+                                            </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="routeName">Route Name</label>
-                                            <input type="text" name="routeName" class="form-control" id="routeName"
-                                                placeholder="Enter Route Name">
+                                            <input required type="text" name="routeName" class="form-control" id="routeName" placeholder="Enter Route Name"
+                                                [class.is-invalid]="routeName.invalid" #routeName="ngModel" ngModel [(ngModel)]="routeModule.routeName">
+                                            <span style="color: red; font-size: 12px;" *ngIf="routeName.invalid">Route Name is
+                                                required</span>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="cities">Cities</label>
-                                            <textarea class="form-control" rows="3"
-                                                placeholder="Enter Cities ..."></textarea>
-                                            <p>Comma separated values Example: Embilipitiya, Middeniya, Thangalla</p>
+                                            <textarea required name="cities" id="cities" class="form-control" rows="3" placeholder="Enter Cities ..."
+                                                [class.is-invalid]="cities.invalid" #cities="ngModel" ngModel [(ngModel)]="routeModule.cities"
+                                                (keyup)="checkValideCities()"></textarea>
+                                            <span style="color: red; font-size: 12px;" *ngIf="citiesLength < 4">Must be at leat 4 cities</span> <br>
+                                            <span style="color: red; font-size: 12px;" *ngIf="checkCitiesValidation == true">Please add comma separated
+                                                values</span>
+                                            
+                                            <p>Comma separated values Example: Embilipitiya,Middeniya,Thangalla</p>
 
-
+                                            
                                         </div>
 
 
@@ -74,7 +83,8 @@
                             </div>
 
                             <div class="card-footer">
-                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                                <button [disabled]="routeForm.form.invalid || checkCitiesValidation == true || citiesLength < 4" (click)="editRoute()"
+                                    style="float: right;" type="submit" class="btn btn-danger">Update</button>
                             </div>
                         </form>
                     </div>

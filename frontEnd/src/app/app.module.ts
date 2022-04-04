@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +21,16 @@ import { EditRouteComponent } from './components/routes/edit-route/edit-route.co
 import { CustomerComponent } from './components/customers/customer/customer.component';
 import { AddCustomerComponent } from './components/customers/add-customer/add-customer.component';
 import { EditCustomerComponent } from './components/customers/edit-customer/edit-customer.component';
+import { ProductComponent } from './components/products/product/product.component';
+import { AddProductComponent } from './components/products/add-product/add-product.component';
+import { EditProductComponent } from './components/products/edit-product/edit-product.component';
+import { StockComponent } from './components/stock/stock/stock.component';
+import { AddStockComponent } from './components/stock/add-stock/add-stock.component';
+import { EditStockComponent } from './components/stock/edit-stock/edit-stock.component';
+import { ViewStockAreaWiseComponent } from './components/stock/view-stock-area-wise/view-stock-area-wise.component';
+import { StockTransferComponent } from './components/stockTransfer/stock-transfer/stock-transfer.component';
+import { AddStockTransferComponent } from './components/stockTransfer/add-stock-transfer/add-stock-transfer.component';
+import { EditStockTransferComponent } from './components/stockTransfer/edit-stock-transfer/edit-stock-transfer.component';
 
 const appRoutes: Routes = [
   {path:'login', component: LoginComponent},
@@ -28,12 +40,23 @@ const appRoutes: Routes = [
       { path: 'home', component: HomeComponent},
       {path: 'user', component: UserComponent},
       {path: 'add-user', component : AddUserComponent},
+      {path: 'edit-user', component : EditUserComponent},
       {path: 'route', component : RouteComponent},
       {path: 'add-route', component : AddRouteComponent},
       {path: 'edit-route', component : EditRouteComponent},
       {path: 'customer', component : CustomerComponent},
       {path: 'add-customer', component : AddCustomerComponent},
-      {path: 'edit-customer', component : EditCustomerComponent}
+      {path: 'edit-customer', component : EditCustomerComponent},
+      {path: 'product', component : ProductComponent},
+      {path: 'add-product', component : AddProductComponent},
+      {path: 'edit-product', component : EditProductComponent},
+      {path: 'stock', component : StockComponent},
+      {path: 'add-stock', component : AddStockComponent},
+      {path: 'edit-stock', component : EditStockComponent},
+      {path: 'stock-area-wise', component : ViewStockAreaWiseComponent},
+      {path: 'stockTransfer', component : StockTransferComponent},
+      {path: 'add-stockTransfer', component : AddStockTransferComponent},
+      {path: 'edit-stockTransfer', component : EditStockTransferComponent},
     ]
   },
   {path: '**', redirectTo: '/login', pathMatch :'full'},
@@ -55,10 +78,22 @@ const appRoutes: Routes = [
     CustomerComponent,
     AddCustomerComponent,
     EditCustomerComponent,
+    ProductComponent,
+    AddProductComponent,
+    EditProductComponent,
+    StockComponent,
+    AddStockComponent,
+    EditStockComponent,
+    ViewStockAreaWiseComponent,
+    StockTransferComponent,
+    AddStockTransferComponent,
+    EditStockTransferComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
+    Ng2SearchPipeModule,
     HttpClientModule,
     AppRoutingModule, RouterModule.forRoot(appRoutes)
     

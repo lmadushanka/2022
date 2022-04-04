@@ -1,10 +1,12 @@
 const { getAll } = require("../server/routeServer");
-const { create, getAllCustomer, update, getWithoutOne, getById } = require('../server/customerServer');
+const { create, getAllCustomer, update, getWithoutOne, getById, deleteCustomer } = require('../server/customerServer');
 
 const createCustomer = (req, res) => {
     const body = req.body;
 
-    if (body.mobileNumber.length == 10 && body.alternateNumber == 10 && body.landLine == 10) {
+    body.status = 1;
+
+    if (body.mobileNumber.length == 9 || body.mobileNumber.length == 10) {
         getAllCustomer((err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -17,7 +19,7 @@ const createCustomer = (req, res) => {
 
             for (i = 0; i < results.length; i++) {
 
-                if (body.mobileNumber == results[i].mobileNumber || body.landLine == results[i].landLine || body.alternateNumber == results[i].alternateNumber) {
+                if (body.mobileNumber == results[i].mobileNumber) {
                     getContact = 1;
                 }
             }
@@ -55,7 +57,7 @@ const createCustomer = (req, res) => {
                     if (!routeId) {
                         return res.status(400).json({
                             success: 0,
-                            msg: "Cities not found"
+                            msg: "Cities not found any route"
                         })
                     } else {
                         create(body, (err, results) => {
@@ -77,7 +79,7 @@ const createCustomer = (req, res) => {
             } else {
                 return res.status(400).json({
                     success: 0,
-                    msg: 'Duplicate data'
+                    msg: 'Duplicate Mobile Number'
                 });
             }
 
@@ -110,12 +112,38 @@ const getCustomer = (req, res) => {
     });
 }
 
+const getCustomerById = (req, res) => {
+    getById(req.params.id, (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                success: 0,
+                msg: 'Database error'
+            });
+        }
+
+        if (!results) {
+            return res.status(404).json({
+                success: 0,
+                msg: 'Record not found'
+            });
+        } else {
+            return res.status(200).json({
+                success: 1,
+                data: results
+            })
+        }
+
+
+    });
+
+}
+
 const updateCustomer = (req, res) => {
     const body = req.body;
 
     body.id = req.params.id;
 
-    if (body.mobileNumber.length == 10 && body.alternateNumber == 10 && body.landLine == 10) {
+    if (body.mobileNumber.length == 10 || body.mobileNumber.length == 9) {
         getById(req.params.id, (err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -143,7 +171,7 @@ const updateCustomer = (req, res) => {
 
                     for (i = 0; i < results.length; i++) {
 
-                        if (body.mobileNumber == results[i].mobileNumber || body.landLine == results[i].landLine || body.alternateNumber == results[i].alternateNumber) {
+                        if (body.mobileNumber == results[i].mobileNumber) {
                             getContact = 1;
                         }
                     }
@@ -231,8 +259,34 @@ const updateCustomer = (req, res) => {
 
 }
 
+deleteCustomerById = (req, res) => {
+
+    deleteCustomer(req.params.id, (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                success: 0,
+                msg: 'Database error'
+            });
+        }
+
+        if (!results) {
+            return res.status(404).json({
+                success: 0,
+                msg: 'Record not found'
+            });
+        } else {
+            return res.status(200).json({
+                success: 1,
+                data: results
+            })
+        }
+    })
+}
+
 module.exports = {
     createCustomer,
     getCustomer,
-    updateCustomer
+    updateCustomer,
+    getCustomerById,
+    deleteCustomerById
 }

@@ -1,9 +1,10 @@
-const { create, getOne, getAll, update, deleteOne } = require("../server/productServer");
+const { create, getOne, getAll, update, deleteOne, checkDuplicated } = require("../server/productServer");
 
 const createProduct = async (req, res) => {
     const body = req.body;
+    body.status = 1;
 
-    getOne(body, (err, results) => {
+    checkDuplicated(body, (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
@@ -36,9 +37,9 @@ const createProduct = async (req, res) => {
 }
 
 const getProductByProductCode = async (req, res) => {
-    const productCode = req.params.productCode;
+    const id = req.params.id;
 
-    getOne(productCode, (err, results) => {
+    getOne(id, (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({

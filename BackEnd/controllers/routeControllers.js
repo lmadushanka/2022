@@ -1,4 +1,4 @@
-const { create, getOneRoute, getAll, deleteById, update, getAllWithoutOne } = require("../server/routeServer");
+const { create, getOneRoute, getAll, deleteById, update, getAllWithoutOne, getOneRouteByid } = require("../server/routeServer");
 
 
 // add route
@@ -8,7 +8,7 @@ const createRoute = async (req, res) => {
     body.cities = JSON.stringify(body.cities.split(','));
 
     //getRouteById for Check Duplicate routeNumber
-    getOneRoute(body.routeNumber, (err, results) => {
+    getOneRoute(body, (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
@@ -101,7 +101,8 @@ const createRoute = async (req, res) => {
         } else {
             return res.status(400).json({
                 success: 0,
-                msg: "Duplicate Data"
+                msg: "Duplicate Data",
+                duplicateData: 'Route Number or Route Name already exist!'
             })
         }
 
@@ -124,8 +125,8 @@ const getAllRoutes = async (req, res) => {
 }
 
 const getRouteById = async (req, res) => {
-    const routeNumber = req.params.id
-    getOneRoute(routeNumber, (err, results) => {
+    const id = req.params.id
+    getOneRouteByid(id, (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({

@@ -1,0 +1,138 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <button type="button" routerLink="/dashboard/product"
+                            class="btn btn-sm btn-block btn-outline-primary">View
+                        </button>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/product">Product</a></li>
+                        <li class="breadcrumb-item active">Edit Product</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Product Form</h3>
+                        </div>
+
+
+                        <form #productForm='ngForm'>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="productCode">Product Code</label>
+                                            <input required type="text" name="productCode" class="form-control"
+                                                id="productCode" placeholder="Enter Product Code" ngModel
+                                                #productCode='ngModel' [(ngModel)]="productModule.productCode"
+                                                [class.is-invalid]='productCode.invalid'>
+                                            <span style="color: red; font-size: 12px;"
+                                                *ngIf="productCode.invalid">Product Code is
+                                                required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="productName">Product Name</label>
+                                            <input required type="text" name="productName" class="form-control"
+                                                id="productName" placeholder="Enter Product Name" ngModel
+                                                #productName='ngModel' [(ngModel)]="productModule.productName"
+                                                [class.is-invalid]='productName.invalid'>
+                                            <span style="color: red; font-size: 12px;"
+                                                *ngIf="productName.invalid">Product Name is
+                                                required</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <hr style="border-color: black;">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="productPrice">Cost Price</label>
+                                            <input required type="text" name="productPrice" class="form-control"
+                                                id="productPrice" placeholder="Enter Product Price" ngModel
+                                                #productPrice='ngModel' [(ngModel)]="productModule.cost"
+                                                [class.is-invalid]='productPrice.invalid'>
+                                            <span style="color: red; font-size: 12px;"
+                                                *ngIf="productPrice.invalid">Product Cost Price is
+                                                required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="salePrice">Sale Price</label>
+                                            <input required type="text" name="salePrice" class="form-control"
+                                                id="salePrice" placeholder="Enter Sale Price" ngModel
+                                                #salePrice='ngModel' [(ngModel)]="productModule.sale"
+                                                [class.is-invalid]='salePrice.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="salePrice.invalid">Product
+                                                Sale Price is
+                                                required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="unit">Unit</label>
+                                            <input required type="text" name="unit" class="form-control" id="unit"
+                                                placeholder="Enter Unit" ngModel #unit='ngModel'
+                                                [(ngModel)]="productModule.unit" [class.is-invalid]='unit.invalid'>
+                                            <span style="color: red; font-size: 12px;" *ngIf="unit.invalid">Unit is
+                                                required</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <hr style="border-color: black;">
+
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="description">Product Description</label>
+                                        <textarea name="productDescription" id="productDescription"
+                                            [(ngModel)]="productModule.productDescription" class="form-control" rows="3"
+                                            placeholder="Enter Description..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="card-footer">
+                                <button [disabled]="productForm.form.invalid" (click)="addProduct()"
+                                    style="float: right;" type="submit" class="btn btn-danger">Update</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

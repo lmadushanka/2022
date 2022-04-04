@@ -1,0 +1,111 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <button type="button" routerLink="/dashboard/add-stock"
+                                class="btn btn-sm btn-block btn-outline-primary">Add</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" routerLink="/dashboard/stock-area-wise"
+                                class="btn btn-sm btn-block btn-outline-success">Stock area wise</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" (click)="printStock()"
+                                class="btn btn-sm btn-block btn-outline-warning">Print</button>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Stock</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Stock Table</h3>
+
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" [(ngModel)]="searchText" name="search"
+                                        class="form-control float-right" placeholder="Search">
+
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Product Code</th>
+                                        <th>Product Name</th>
+                                        <th>Current Stock</th>
+                                        <th>Date</th>
+                                        <th width="10%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="dataArrayLength == 0">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No data found</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngFor="let arr of dataArray | filter:searchText">
+
+                                    <tr>
+                                        <td>{{arr.productCode}}</td>
+                                        <td>{{arr.productName}}</td>
+                                        <td>{{arr.stock}}</td>
+                                        <td>{{arr.added_at}}</td>
+                                        <td>
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <button type="button" (click)="editStock(arr.id)"
+                                                        class="btn btn-block btn-sm btn-outline-success"><i
+                                                            class="nav-icon fas fa-pen"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button type="button" (click)="deleteStock(arr.id)"
+                                                        class="btn btn-block btn-sm btn-outline-danger"><i
+                                                            class="nav-icon fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
