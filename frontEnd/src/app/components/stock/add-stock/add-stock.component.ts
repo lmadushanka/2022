@@ -22,7 +22,7 @@ export class AddStockComponent implements OnInit {
 
   productArray:any = [];
 
-  stockModule = new StockModule('','','','','','');
+  stockModule = new StockModule('','','','','','','');
 
   constructor( 
     private fb:FormBuilder,
@@ -36,9 +36,23 @@ export class AddStockComponent implements OnInit {
     });
   }
 
+  finalDate:any;
+
   ngOnInit(): void {
     this.getAllRoute();
     this.getAllProduct();
+
+    const date:any = new Date().toLocaleDateString().split('/');
+
+    if(date[0].length == 1){
+      date[0] = '0'+date[0];
+    }
+
+    if(date[1].length == 1){
+      date[1] = '0'+date[1];
+    }
+
+    this.finalDate =  date[1]+'/'+date[0]+'/'+date[2];
   }
 
   quantities() : FormArray{
@@ -65,6 +79,7 @@ export class AddStockComponent implements OnInit {
 
     this.stockModule.productId = this.stockForm.value.productId;
     this.stockModule.stock = this.stockForm.value.stock;
+    
 
     
 
@@ -87,7 +102,7 @@ export class AddStockComponent implements OnInit {
             this.stockModule.productId = this.stockForm.value.stock[i].productId;
             this.stockModule.stock = this.stockForm.value.stock[i].stockAmount;
             this.stockModule.status = 1;
-            this.stockModule.added_at = '2022-04-03';
+            this.stockModule.added_at = this.finalDate;
             
 
             this.stockService.createStock(this.stockModule).subscribe((res) =>{

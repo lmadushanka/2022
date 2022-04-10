@@ -1,6 +1,7 @@
 export class StockModule {
 
     constructor(
+        public id: any,
         public productId: any,
         public productCode: any,
         public productName: string,

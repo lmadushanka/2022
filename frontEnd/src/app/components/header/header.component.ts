@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription, switchMap, timer } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service'
 
 
@@ -12,6 +13,8 @@ export class HeaderComponent implements OnInit {
 
   userName:any;
   userRole:any;
+
+  subscription = new Subscription();
 
   constructor(
     private authService: AuthService,
@@ -26,12 +29,16 @@ export class HeaderComponent implements OnInit {
   }
 
   checkValidation(){
-    this.authService.checkToken().subscribe((res) =>{
+    
+    this.subscription = timer(0, 1000 * 60).pipe(
+      switchMap(() => this.authService.checkToken())
+    ).subscribe((res) =>{
       if(res.success == 0){
         localStorage.clear();
         this.router.navigateByUrl('/login')
+        console.log('test');
+        
       }
-      
     })
   }
 

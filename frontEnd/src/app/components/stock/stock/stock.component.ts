@@ -25,6 +25,9 @@ export class StockComponent implements OnInit {
     this.getAllStock();
 
     this.successStockAdd();
+
+    localStorage.removeItem('stockIdForEditStock');
+    localStorage.removeItem('productNameForEditStock');
   }
 
   successStockAdd(){
@@ -70,8 +73,10 @@ export class StockComponent implements OnInit {
     });
   }
 
-  editStock(id:any){
-
+  editStock(id:any, prodcutName:any){
+    localStorage.setItem('stockIdForEditStock', id);
+    localStorage.setItem('productNameForEditStock', prodcutName);
+    this.router.navigateByUrl('/dashboard/edit-stock');
   }
 
   deleteStock(id:any){

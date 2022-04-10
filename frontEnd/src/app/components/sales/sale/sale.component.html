@@ -5,15 +5,15 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <div class="col-sm-2">
-                        <button type="button" routerLink="/dashboard/add-product"
-                            class="btn btn-sm btn-block btn-outline-primary">Add</button>
+                        <button type="button" routerLink="/dashboard/add-sale"
+                            class="btn btn-block btn-sm btn-outline-primary">Add</button>
                     </div>
 
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Product</li>
+                        <li class="breadcrumb-item active">Sales</li>
                     </ol>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Product Table</h3>
+                            <h3 class="card-title">Sales Table</h3>
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -46,14 +46,18 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                     <tr>
-                                        
-                                        <th>Product Code</th>
-                                        <th>Product Name</th>
-                                        <th>Cost Price</th>
-                                        <th>Sale Price</th>
-                                        <th>Unit</th>
-                                        <th>Description</th>
-                                        <th>Action</th>
+                                        <th>Invoice No</th>
+                                        <th>Customer Name</th>
+                                        <th>Route</th>
+                                        <th>Payment Status</th>
+                                        <th>Sales Status</th>
+                                        <th>Total Qty</th>
+                                        <th>Free Issue</th>
+                                        <th>Total Price</th>
+                                        <th>Total Discount</th>
+                                        <th>Grand Total</th>
+                                        <th>Paid Amount</th>
+                                        <th>Sales Not</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="dataArrayLength == 0">
@@ -64,24 +68,31 @@
                                 <tbody *ngFor="let arr of dataArray | filter:searchText">
 
                                     <tr>
-                                        <td>{{arr.productCode}}</td>
-                                        <td>{{arr.productName}}</td>
-                                        <td>{{arr.cost | currency: 'Rs. '}}</td>
-                                        <td>{{arr.sale | currency: 'Rs. '}}</td>
-                                        <td>{{arr.unit}}</td>
-                                        <td>{{arr.productDescription}}</td>
+                                        <td>{{arr.id}}</td>
+                                        <td>{{arr.customerName}}</td>
+                                        <td>{{arr.routeName}}</td>
+                                        <td *ngIf="arr.paymentStatus == 1">Cash</td>
+                                        <td *ngIf="arr.paymentStatus == 2">Credit</td>
+                                        <td *ngIf="arr.salesSatatus == 1">Complete</td>
+                                        <td *ngIf="arr.salesSatatus == 2">Due</td>
+                                        <td>{{arr.totalQty}}</td>
+                                        <td>{{arr.freeIssue}}</td>
+                                        <td>{{arr.totalPrice | currency: 'Rs. '}}</td>
+                                        <td>{{arr.totalDiscount | currency: 'Rs. '}}</td>
+                                        <td>{{arr.grandTotal | currency: 'Rs. '}}</td>
+                                        <td>{{arr.paidAmount | currency: 'Rs. '}}</td>
+                                        <td>{{arr.salesNote}}</td>
                                         <td>
                                             <div class="row">
 
                                                 <div class="col">
-                                                    <button type="button" (click)="editProduct(arr.id)"
+                                                    <button type="button" (click)="editSale()"
                                                         class="btn btn-block btn-sm btn-outline-success"><i
                                                             class="nav-icon fas fa-pen"></i>
                                                     </button>
                                                 </div>
                                                 <div class="col">
-                                                    <button type="button"
-                                                        (click)="deleteProduct(arr.id,arr.productName)"
+                                                    <button type="button" (click)="deleteSale()"
                                                         class="btn btn-block btn-sm btn-outline-danger"><i
                                                             class="nav-icon fas fa-trash"></i>
                                                     </button>
@@ -89,6 +100,7 @@
 
 
                                             </div>
+
                                         </td>
                                     </tr>
                                 </tbody>

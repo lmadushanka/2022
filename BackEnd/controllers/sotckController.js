@@ -1,4 +1,4 @@
-const { create, getAll, getOne, update, deleteOne, getRouteIdNull, getAllStockGroupByProduct, getStockByRouteId } = require('../server/stockServer');
+const { create, getAll, getOne, update, deleteOne, getRouteIdNull, getAllStockGroupByProduct, getStockByRouteId, getStockByRouteProduct } = require('../server/stockServer');
 
 
 const createStock = (req, res) => {
@@ -56,6 +56,32 @@ const getAllStocks = (req, res) => {
             success: 1,
             data: results
         });
+    })
+}
+
+const getStockAmountByRouteProduct = (req, res) => {
+    const body = req.body;
+
+    getStockByRouteProduct(body, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                msg: 'Server error'
+            })
+        }
+
+        if (!results) {
+            return res.status(404).json({
+                success: 0,
+                msg: 'Record not found'
+            })
+        } else {
+            return res.status(200).json({
+                success: 1,
+                data: results
+            });
+        }
     })
 }
 
@@ -196,5 +222,6 @@ module.exports = {
     updateStock,
     deleteStock,
     getMainStock,
-    getStockByRoute
+    getStockByRoute,
+    getStockAmountByRouteProduct
 }

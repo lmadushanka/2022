@@ -98,8 +98,23 @@ const getOneSale = (id, callBack) => {
     )
 }
 
+const freeIssue = (saleId, callBack) => {
+    con.query(
+        `SELECT SUM(freeIssue) AS freeIssue FROM productssale WHERE saleId = ?`,
+        [saleId],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+
+            return callBack(null, results);
+        }
+    )
+}
+
+
 //Get product sales by saleId
-getProductSaleBySaleId = (saleId, callBack) => {
+const getProductSaleBySaleId = (saleId, callBack) => {
     con.query(
         `SELECT * FROM productssale WHERE saleId = ?`,
         [saleId],
@@ -202,5 +217,6 @@ module.exports = {
     updateStock,
     getStockByRouteAndProductId,
     update,
-    updateProductSale
+    updateProductSale,
+    freeIssue
 }

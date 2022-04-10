@@ -8,13 +8,12 @@ const {
     getStockByRouteAndProductId,
     updateStock,
     update,
-    updateProductSale
+    updateProductSale,
+    freeIssue
 } = require('../server/salesServer');
 
 const addSale = (req, res) => {
     const body = req.body
-
-    console.log();
 
 
     if (
@@ -421,6 +420,32 @@ const getSales = (req, res) => {
     })
 }
 
+const getFreeIssue = (req, res) => {
+    const saleId = req.params.saleId;
+
+    freeIssue(saleId, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                msg: 'Database eroor'
+            })
+        }
+
+        if (results) {
+            return res.status(200).json({
+                success: 1,
+                data: results
+            })
+        } else {
+            return res.status(404).json({
+                success: 0,
+                data: 'Record not found'
+            })
+        }
+    })
+}
+
 // Get product sales by sale id
 const getProductSale = (req, res) => {
     const saleId = req.params.saleId;
@@ -453,5 +478,6 @@ module.exports = {
     getSales,
     getProductSale,
     getSaleById,
-    updateSales
+    updateSales,
+    getFreeIssue
 }

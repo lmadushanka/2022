@@ -2,11 +2,12 @@ const con = require("../config/db");
 
 const create = (data, callBack) => {
     con.query(
-        `INSERT INTO stocktransfer(productId, routeId, stock, date, status)
-                VALUES(?, ?, ?, ?, ?)`,
+        `INSERT INTO stocktransfer(productId, inRouteId, toRouteId, stock, date, status)
+                VALUES(?, ?, ?, ?, ?, ?)`,
         [
             data.productId,
-            data.routeId,
+            data.inRouteId,
+            data.toRouteId,
             data.stock,
             data.date,
             data.status
@@ -20,6 +21,8 @@ const create = (data, callBack) => {
         }
     )
 }
+
+
 
 const getOneById = (id, callBack) => {
     con.query(
@@ -172,5 +175,5 @@ module.exports = {
     getStocksCountByProductId,
     updateStockCount,
     getStockAmountByRoute,
-    createStock
+    createStock,
 }

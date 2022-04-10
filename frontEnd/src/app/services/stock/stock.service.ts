@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Globale } from 'src/app/modules/globals';
+import { Globale } from '../../modules/globals';
 import { StockModule } from '../../modules/stockModule';
 
 const httpOptions = {
@@ -35,6 +35,26 @@ export class StockService {
     let stockUrl = this.baseUrl.Url+'stock/route/'+ routeId;
 
     return this.http.get(stockUrl, httpOptions);
+  }
+
+  getStockById(id:any):Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock/'+id;
+
+    return this.http.get(stockUrl, httpOptions);
+  }
+
+  getStockAmount(stockModule:any):Observable<any>{
+
+    let stockTransferUrl = this.baseUrl.Url + 'stock/stock-amount';
+    
+
+    return this.http.post(stockTransferUrl, stockModule, httpOptions);
+  }
+
+  update(stockModule: StockModule, id: any):Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock/'+id;
+
+    return this.http.patch(stockUrl, stockModule, httpOptions);
   }
 
   delete(id:any):Observable<any>{

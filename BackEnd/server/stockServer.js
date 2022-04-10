@@ -46,6 +46,23 @@ const getAll = callBack => {
     )
 }
 
+const getStockByRouteProduct = (data, callBack) => {
+    con.query(
+        `SELECT SUM(stock) AS stock FROM stocks WHERE  routeId = ? AND productId = ?`,
+        [
+            data.routeId,
+            data.productId
+        ],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+
+            return callBack(null, results[0]);
+        }
+    )
+}
+
 const getRouteIdNull = callBack => {
     con.query(
         `SELECT * FROM stocks WHERE routeId = 0`,
@@ -87,10 +104,9 @@ getAllStockGroupByProduct = callBack => {
 
 const update = (data, callBack) => {
     con.query(
-        `UPDATE stocks SET stock=?,status=? WHERE id=?`,
+        `UPDATE stocks SET stock=? WHERE id=?`,
         [
             data.stock,
-            data.status,
             data.id
         ],
         (err, results, fields) => {
@@ -123,5 +139,6 @@ module.exports = {
     deleteOne,
     getRouteIdNull,
     getAllStockGroupByProduct,
-    getStockByRouteId
+    getStockByRouteId,
+    getStockByRouteProduct
 }

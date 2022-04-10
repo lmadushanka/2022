@@ -31,6 +31,9 @@ import { ViewStockAreaWiseComponent } from './components/stock/view-stock-area-w
 import { StockTransferComponent } from './components/stockTransfer/stock-transfer/stock-transfer.component';
 import { AddStockTransferComponent } from './components/stockTransfer/add-stock-transfer/add-stock-transfer.component';
 import { EditStockTransferComponent } from './components/stockTransfer/edit-stock-transfer/edit-stock-transfer.component';
+import { SaleComponent } from './components/sales/sale/sale.component';
+import { AddSaleComponent } from './components/sales/add-sale/add-sale.component';
+import { EditSaleComponent } from './components/sales/edit-sale/edit-sale.component';
 
 const appRoutes: Routes = [
   {path:'login', component: LoginComponent},
@@ -57,6 +60,9 @@ const appRoutes: Routes = [
       {path: 'stockTransfer', component : StockTransferComponent},
       {path: 'add-stockTransfer', component : AddStockTransferComponent},
       {path: 'edit-stockTransfer', component : EditStockTransferComponent},
+      {path: 'sale', component : SaleComponent},
+      {path: 'add-sale', component : AddSaleComponent},
+      {path: 'edit-sale', component : EditSaleComponent},
     ]
   },
   {path: '**', redirectTo: '/login', pathMatch :'full'},
@@ -88,6 +94,9 @@ const appRoutes: Routes = [
     StockTransferComponent,
     AddStockTransferComponent,
     EditStockTransferComponent,
+    SaleComponent,
+    AddSaleComponent,
+    EditSaleComponent,
   ],
   imports: [
     BrowserModule,

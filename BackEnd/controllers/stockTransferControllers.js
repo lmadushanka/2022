@@ -8,7 +8,7 @@ const {
     getStocksCountByProductId,
     updateStockCount,
     getStockAmountByRoute,
-    createStock
+    createStock,
 } = require("../server/stockTransferServer");
 
 

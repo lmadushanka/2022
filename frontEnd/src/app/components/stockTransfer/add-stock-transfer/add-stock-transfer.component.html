@@ -35,19 +35,21 @@
                         </div>
 
 
-                        <form id="quickForm" novalidate="novalidate" autocomplete="off">
+                        <form #stockTransferForm=ngForm>
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <select class="form-control">
-                                                <option>Select Route</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
+                                            <select [class.is-invalid]="inRouteValidation" (change)="selectInRoute($event)" class="form-control">
+                                                <option value="">Select Route</option>
+                                                <option value="0">Main Stock</option>
+                                                <option *ngFor="let arr of routeArray" value="{{arr.id}}">
+                                                    {{arr.routeName}}</option>
                                             </select>
+                                            <span style="color: red; font-size: 12px;" *ngIf="inRouteValidation">In
+                                                route is
+                                                required</span>
                                         </div>
                                     </div>
 
@@ -61,28 +63,51 @@
 
                                     <div class="col">
                                         <div class="form-group">
-                                            <select class="form-control">
-                                                <option>Select Route</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
+                                            <select [class.is-invalid]="toRouteValidation" (change)="selectToRoute($event)" class="form-control">
+                                                <option value="">Select Route</option>
+                                                <option *ngFor="let arr of routeArray" value="{{arr.id}}">
+                                                    {{arr.routeName}}</option>
                                             </select>
+                                            <span style="color: red; font-size: 12px;" *ngIf="toRouteValidation">To
+                                                route is
+                                                required</span>
                                         </div>
                                     </div>
 
 
                                 </div>
 
+                                <hr style="border-color: black;">
+                                
+                                <br>
+
                                 <div class="row">
 
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <select [class.is-invalid]="productValidation" (change)="selectProduct($event)" class="form-control">
+                                                <option value="">Select Product</option>
+                                                <option *ngFor="let arr of productArray" value="{{arr.id}}">
+                                                    {{arr.productName}}</option>
+                                            </select>
+                                            <span style="color: red; font-size: 12px;" *ngIf="productValidation">Product is
+                                                required</span>
+                                        </div>
+                                    </div>
 
-                                    <div style="margin: auto;" class="col-sm-3">
+                                    <div style="margin: auto;" class="col">
 
                                         <div class="form-group">
-                                            <input type="text" name="stockAmount" class="form-control" id="stockAmount"
-                                                placeholder="Enter Stock Amount">
-                                        </div>
+                                            <input (keyup)="checkStock()" (click)="getStock()" type="text" required name="stockAmount" style="text-align: center;"
+                                                class="form-control" id="stockAmount" placeholder="Enter Stock Amount"
+                                                [class.is-invalid]="stockAmount.invalid || stockValidation" #stockAmount="ngModel" ngModel
+                                                [(ngModel)]="stockTransferModule.stock">
+                                            <span style="color: red; font-size: 12px;" *ngIf="stockAmount.invalid">Stock
+                                                amount is
+                                                required</span>
+                                            <span style="color: red; font-size: 12px;" *ngIf="stockValidation">No stock
+                                            </span>
+                                            </div>
                                     </div>
                                 </div>
 
@@ -93,7 +118,8 @@
                             </div>
 
                             <div class="card-footer">
-                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                                <button [disabled]="stockTransferForm.form.invalid || inRouteValidation || toRouteValidation || stockValidation"
+                                    (click)="addStockTransfer()" style="float: right; " type="submit" class="btn btn-info">Submit</button>
                             </div>
                         </form>
                     </div>

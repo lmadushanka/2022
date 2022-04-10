@@ -41,14 +41,8 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Route</label>
-                                            <select class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
-                                            </select>
+                                            <label for="productName">Product Name</label>
+                                            <input type="text" disabled value="{{productName}}" class="form-control">
                                         </div>
                                     </div>
 
@@ -56,7 +50,7 @@
 
                                         <div class="form-group">
                                             <label for="stockAmount">Stock Amount</label>
-                                            <input type="text" name="stockAmount" class="form-control" id="stockAmount"
+                                            <input type="number" name="stockAmount" [(ngModel)]="stock" class="form-control" id="stockAmount"
                                                 placeholder="Enter Stock Amount">
                                         </div>
                                     </div>
@@ -69,7 +63,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <button style="float: right;" type="submit" class="btn btn-info">Submit</button>
+                                <button (click)="update()" style="float: right;" type="submit" class="btn btn-info">Submit</button>
                             </div>
                         </form>
                     </div>

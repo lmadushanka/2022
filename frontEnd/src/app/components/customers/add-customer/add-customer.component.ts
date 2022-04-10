@@ -18,11 +18,22 @@ export class AddCustomerComponent implements OnInit {
 
 
   customerModule = new CustomerModule('','','','','','','','','','','','','','');
+  finalDate:any
+  
 
   ngOnInit(): void {
     
-    console.log(new Date().toLocaleDateString());
-    
+    const date:any = new Date().toLocaleDateString().split('/');
+
+    if(date[0].length == 1){
+      date[0] = '0'+date[0];
+    }
+
+    if(date[1].length == 1){
+      date[1] = '0'+date[1];
+    }
+
+    this.finalDate =  date[1]+'/'+date[0]+'/'+date[2];
   }
 
   addCustomer(){
@@ -40,7 +51,7 @@ export class AddCustomerComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.customerModule.added_at = new Date().toLocaleDateString('M/d/yy');
+        this.customerModule.added_at = this.finalDate;
 
         this.customerService.createCustomer(this.customerModule).subscribe((res) =>{
     
