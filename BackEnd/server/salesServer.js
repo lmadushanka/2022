@@ -4,18 +4,19 @@ const con = require('../config/db');
 // Insert sales to sales table
 const create = (data, callBack) => {
     con.query(
-        `INSERT INTO sales(customerId, userId, routeId, paymentStatus, salesSatatus,
-            totalQty, totalPrice, totalDiscount, grandTotal, paidAmount, salesNote, createdAt)
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
+        `INSERT INTO sales(customerId, userId, routeId, paymentStatus,Account,chequeNumber, salesSatatus,
+            totalQty, totalPrice, grandTotal, paidAmount, salesNote, createdAt)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
             data.customerId,
             data.userId,
             data.routeId,
             data.paymentStatus,
+            data.account,
+            data.chequeNumber,
             data.salesSatatus,
             data.totalQty,
             data.totalPrice,
-            data.totalDiscount,
             data.grandTotal,
             data.paidAmount,
             data.salesNote,
@@ -33,15 +34,14 @@ const create = (data, callBack) => {
 //Insert product sales to productSales
 const createProductSales = (data, callBack) => {
     con.query(
-        `INSERT INTO productssale(saleId, product_id, qty, freeIssue, unitPrice, discount,total)
-                VALUES(?,?,?,?,?,?,?)`,
+        `INSERT INTO productssale(saleId, product_id, qty, freeIssue, unitPrice,total)
+                VALUES(?,?,?,?,?,?)`,
         [
             data.saleId,
             data.product_id,
             data.qty,
             data.freeIssue,
             data.unitPrice,
-            data.discount,
             data.total
         ],
         (err, results, fields) => {
@@ -166,14 +166,13 @@ getStockByRouteAndProductId = (data, callBack) => {
 //Update sales
 const update = (data, callBack) => {
     con.query(
-        `UPDATE sales SET paymentStatus =?, salesSatatus=?, totalQty=?, totalPrice=?,totalDiscount=?,
+        `UPDATE sales SET paymentStatus =?, salesSatatus=?, totalQty=?, totalPrice=?,
                 grandTotal=?,paidAmount=?, salesNote=?  WHERE id=?`,
         [
             data.paymentStatus,
             data.salesSatatus,
             data.totalQty,
             data.totalPrice,
-            data.totalDiscount,
             data.grandTotal,
             data.paidAmount,
             data.salesNote,
@@ -190,11 +189,10 @@ const update = (data, callBack) => {
 
 const updateProductSale = (data, callBack) => {
     con.query(
-        `UPDATE productssale SET qty =?, freeIssue=?, discount=?, total=?  WHERE id=?`,
+        `UPDATE productssale SET qty =?, freeIssue=?, total=?  WHERE id=?`,
         [
             data.qty,
             data.freeIssue,
-            data.discount,
             data.total,
             data.productSaleId
         ],
@@ -207,6 +205,54 @@ const updateProductSale = (data, callBack) => {
     )
 }
 
+const filterSalesByPaymentStatus = (data, callBack) => {
+    con.query(
+        `SELECT * FROM sales WHERE paymentStatus = ? ORDER BY createdAt ASC`,
+        [
+            data.paymentStatus
+        ],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err)
+            }
+            return callBack(null, results)
+        }
+    )
+}
+
+const filterSalesBySalesStatus = (data, callBack) => {
+    con.query(
+        `SELECT * FROM sales WHERE salesSatatus = ? ORDER BY createdAt ASC`,
+        [
+            data.salesStataus,
+        ],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err)
+            }
+            return callBack(null, results)
+        }
+    )
+}
+
+const filterAllStatus = (data, callBack) => {
+    con.query(
+        `SELECT * FROM sales WHERE paymentStatus = ? AND salesSatatus = ? ORDER BY createdAt ASC`,
+        [
+            data.paymentStatus,
+            data.salesStataus,
+        ],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err)
+            }
+            return callBack(null, results)
+        }
+    )
+}
+
+
+
 module.exports = {
     create,
     getRouteId,
@@ -218,5 +264,8 @@ module.exports = {
     getStockByRouteAndProductId,
     update,
     updateProductSale,
-    freeIssue
+    freeIssue,
+    filterSalesByPaymentStatus,
+    filterSalesBySalesStatus,
+    filterAllStatus
 }

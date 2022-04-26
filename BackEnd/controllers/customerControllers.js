@@ -1,5 +1,5 @@
 const { getAll } = require("../server/routeServer");
-const { create, getAllCustomer, update, getWithoutOne, getById, deleteCustomer } = require('../server/customerServer');
+const { create, getAllCustomer, update, getWithoutOne, getById, deleteCustomer, customerCount } = require('../server/customerServer');
 
 const createCustomer = (req, res) => {
     const body = req.body;
@@ -221,8 +221,6 @@ const updateCustomer = (req, res) => {
                                         });
                                     }
 
-                                    console.log(results);
-
                                     if (results) {
                                         return res.status(200).json({
                                             success: 1,
@@ -283,10 +281,27 @@ deleteCustomerById = (req, res) => {
     })
 }
 
+const getCustomerCount = (req, res) => {
+
+    customerCount((err, results) => {
+        if (err) {
+            return res.status(500).json({
+                success: 0,
+                msg: 'Database error'
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results
+        })
+    })
+}
+
 module.exports = {
     createCustomer,
     getCustomer,
     updateCustomer,
     getCustomerById,
-    deleteCustomerById
+    deleteCustomerById,
+    getCustomerCount
 }

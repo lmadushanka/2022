@@ -1,4 +1,4 @@
-const { create, getAll, getOne, update, deleteOne, getRouteIdNull, getAllStockGroupByProduct, getStockByRouteId, getStockByRouteProduct } = require('../server/stockServer');
+const { create, getAll, getOne, update, deleteOne, getRouteIdNull, getSumAllProduct, getAllStockGroupByProduct, getStockByRouteId, getStockByRouteProduct } = require('../server/stockServer');
 
 
 const createStock = (req, res) => {
@@ -214,6 +214,22 @@ const deleteStock = (req, res) => {
     });
 }
 
+const getSumAllProductWise = (req, res) => {
+    getSumAllProduct((err, results) => {
+        if (err) {
+            return res.status(500).json({
+                success: 0,
+                msg: 'Server error'
+            })
+        }
+
+        return res.status(200).json({
+            success: 1,
+            data: results
+        });
+    })
+}
+
 module.exports = {
     createStock,
     getAllStocksGroupByProductWise,
@@ -223,5 +239,6 @@ module.exports = {
     deleteStock,
     getMainStock,
     getStockByRoute,
-    getStockAmountByRouteProduct
+    getStockAmountByRouteProduct,
+    getSumAllProductWise
 }

@@ -117,11 +117,26 @@ const deleteCustomer = (data, callBack) => {
     )
 }
 
+const customerCount = callBack => {
+    con.query(
+        `SELECT COUNT(id) AS customerCount FROM customer WHERE status = 1`,
+        [],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+
+            return callBack(null, results)
+        }
+    )
+}
+
 module.exports = {
     create,
     getAllCustomer,
     update,
     getWithoutOne,
     getById,
-    deleteCustomer
+    deleteCustomer,
+    customerCount
 }

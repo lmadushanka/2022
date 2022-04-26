@@ -11,6 +11,7 @@ const stockRouter = require("./routes/stockRouters");
 const customerRouter = require("./routes/customerRoutes");
 const stockTransfer = require("./routes/stockTransferRoutes");
 const salesRouter = require("./routes/salesRoutes");
+const customerHistoryRouter = require("./routes/customerHistoryRouter");
 
 app.use(express.json());
 app.use(cors());
@@ -23,9 +24,11 @@ app.use("/api/v1/stock/", stockRouter);
 app.use("/api/v1/customer/", customerRouter);
 app.use("/api/v1/stockTransfer/", stockTransfer);
 app.use("/api/v1/sales/", salesRouter);
+app.use("/api/v1/customer-history/", customerHistoryRouter);
 
-
+module.exports = app
 
 app.listen(process.env.APP_PORT, () => {
     console.log(`Server is listening port ${process.env.APP_PORT}`);
 });
+

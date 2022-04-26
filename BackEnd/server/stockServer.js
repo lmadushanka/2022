@@ -78,7 +78,7 @@ const getRouteIdNull = callBack => {
 
 const getStockByRouteId = (routeId, callBack) => {
     con.query(
-        `SELECT * FROM stocks WHERE routeId = ? AND stock != 0 ORDER BY productId`,
+        `SELECT id,productId,routeId,SUM(stock) AS stock,added_at,status FROM stocks WHERE routeId = ? GROUP BY productId`,
         [routeId],
         (err, results, fields) => {
             if (err) {
@@ -92,6 +92,19 @@ const getStockByRouteId = (routeId, callBack) => {
 getAllStockGroupByProduct = callBack => {
     con.query(
         `SELECT * FROM stocks WHERE routeId = 0 AND stock != 0 ORDER BY productId`,
+        [],
+        (err, results, fields) => {
+            if (err) {
+                return callBack(err);
+            }
+            return callBack(null, results);
+        }
+    )
+}
+
+getSumAllProduct = callBack => {
+    con.query(
+        `SELECT id,productId,routeId,SUM(stock) AS stock,added_at,status FROM stocks GROUP BY productId`,
         [],
         (err, results, fields) => {
             if (err) {
@@ -140,5 +153,6 @@ module.exports = {
     getRouteIdNull,
     getAllStockGroupByProduct,
     getStockByRouteId,
-    getStockByRouteProduct
+    getStockByRouteProduct,
+    getSumAllProduct
 }

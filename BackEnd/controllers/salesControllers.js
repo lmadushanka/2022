@@ -9,11 +9,16 @@ const {
     updateStock,
     update,
     updateProductSale,
-    freeIssue
+    freeIssue,
+    filterSalesByPaymentStatus,
+    filterSalesBySalesStatus,
+    filterAllStatus
 } = require('../server/salesServer');
 
 const addSale = (req, res) => {
     const body = req.body
+
+    console.log(body);
 
 
     if (
@@ -473,11 +478,93 @@ const getProductSale = (req, res) => {
     });
 }
 
+const filterSalesById = (req, res) => {
+    const body = req.body;
+
+    body.paymentStatus = req.params.paymentStatus;
+    body.salesStataus = req.params.salesStatus;
+
+    if (body.paymentStatus != 'undefined' && body.salesStataus == 'undefined') {
+
+        filterSalesByPaymentStatus(body, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    msg: 'Database eroor'
+                })
+            }
+
+            if (results) {
+                return res.status(200).json({
+                    success: 1,
+                    data: results
+                })
+            } else {
+                return res.status(404).json({
+                    success: 0,
+                    data: 'Record not found'
+                })
+            }
+        })
+    } else if (body.paymentStatus == 'undefined' && body.salesStataus != 'undefined') {
+
+        filterSalesBySalesStatus(body, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    msg: 'Database eroor'
+                })
+            }
+
+            if (results) {
+                return res.status(200).json({
+                    success: 1,
+                    data: results
+                })
+            } else {
+                return res.status(404).json({
+                    success: 0,
+                    data: 'Record not found'
+                })
+            }
+        })
+    } else if (body.paymentStatus != 'undefined' && body.salesStataus != 'undefined') {
+
+        filterAllStatus(body, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    msg: 'Database eroor'
+                })
+            }
+
+            if (results) {
+                return res.status(200).json({
+                    success: 1,
+                    data: results
+                })
+            } else {
+                return res.status(404).json({
+                    success: 0,
+                    data: 'Record not found'
+                })
+            }
+        })
+    }
+
+
+
+}
+
 module.exports = {
     addSale,
     getSales,
     getProductSale,
     getSaleById,
     updateSales,
-    getFreeIssue
+    getFreeIssue,
+    filterSalesById
 }
