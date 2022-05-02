@@ -1,9 +1,10 @@
-const { create, getUsers, getUserById, checkExistingUser, updateUser, deleteUser } = require("../server/userServer");
+const { create, getUsers, getUserById, checkExistingUser, updateUser, deleteUser } = require("../service/userServer");
 
-const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+const { genSaltSync, hashSync } = require("bcryptjs");
 
-const createUser = async (req, res) => {
+const createUser = (req, res) => {
     const email = req.body.email;
+
     checkExistingUser(email, (err, results) => {
 
         if (err) {
@@ -60,7 +61,7 @@ const createUser = async (req, res) => {
 
 }
 
-const getAllUser = async (req, res) => {
+const getAllUser = (req, res) => {
     getUsers((err, results) => {
         if (err) {
             console.log(err);

@@ -20,8 +20,38 @@
         </div>
     </div>
 
+    
+
     <section class="content">
         <div class="container-fluid">
+<hr>
+
+<div class="row">
+    <div style="margin: auto;" class="col-2">
+        <div class="form-group">
+            <label for="">Filter Payment Status</label>
+            <select (change)="onFilterPaymentStatus($event)" class="form-control">
+                <option value="0">All</option>
+                <option value="1">Cash</option>
+                <option value="2">Credit</option>
+                <option value="3">Cheque</option>
+            </select>
+        </div>
+    </div>
+    <div style="margin: auto;" class="col-2">
+        <div class="form-group">
+            <label for="">Filter Sales Status</label>
+            <select (change)="onFilterSalesStatus($event)" class="form-control">
+                <option value="0">All</option>
+                <option value="1">Complete</option>
+                <option value="2">Due</option>
+                <option value="3">Partial</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<hr>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -57,12 +87,22 @@
                                         <th>Total Discount</th>
                                         <th>Grand Total</th>
                                         <th>Paid Amount</th>
+                                        <th>Due Amount</th>
                                         <th>Sales Not</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="dataArrayLength == 0">
                                     <tr>
-                                        <td colspan="7" style="text-align: center;">No data found</td>
+                                        <td colspan="13" style="text-align: center;">No data found</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody *ngIf="lording">
+                                            <tr>
+                                                <td colspan="13" style="text-align: center;">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </td>
                                     </tr>
                                 </tbody>
                                 <tbody *ngFor="let arr of dataArray | filter:searchText">
@@ -71,16 +111,23 @@
                                         <td>{{arr.id}}</td>
                                         <td>{{arr.customerName}}</td>
                                         <td>{{arr.routeName}}</td>
-                                        <td *ngIf="arr.paymentStatus == 1">Cash</td>
-                                        <td *ngIf="arr.paymentStatus == 2">Credit</td>
-                                        <td *ngIf="arr.salesSatatus == 1">Complete</td>
-                                        <td *ngIf="arr.salesSatatus == 2">Due</td>
+                                        <td style="text-align: center;" *ngIf="arr.paymentStatus == 1"> <span class="right badge badge-success">Cash</span></td>
+                                        <td style="text-align: center;" *ngIf="arr.paymentStatus == 2"><span class="right badge badge-danger">Credit</span></td>
+                                        <td style="text-align: center;" *ngIf="arr.paymentStatus == 3"><span class="right badge badge-info">Cheque</span></td>
+                                        <td style="text-align: center;" *ngIf="arr.paymentStatus == 4"><span class="right badge badge-warning">Partial</span>
+                                        </td>
+                                        <td style="text-align: center;" *ngIf="arr.salesSatatus == 1"> <span class="right badge badge-primary">Complete</span>
+                                        </td>
+                                        <td style="text-align: center;" *ngIf="arr.salesSatatus == 2"><span class="right badge badge-warning">Due</span></td>
+                                        <td style="text-align: center;" *ngIf="arr.salesSatatus == 3"><span class="right badge badge-success">Pending</span>
+                                        </td>
                                         <td>{{arr.totalQty}}</td>
                                         <td>{{arr.freeIssue}}</td>
                                         <td>{{arr.totalPrice | currency: 'Rs. '}}</td>
                                         <td>{{arr.totalDiscount | currency: 'Rs. '}}</td>
                                         <td>{{arr.grandTotal | currency: 'Rs. '}}</td>
                                         <td>{{arr.paidAmount | currency: 'Rs. '}}</td>
+                                        <td>{{arr.grandTotal - arr.paidAmount | currency: 'Rs. '}}</td>
                                         <td>{{arr.salesNote}}</td>
                                         <td>
                                             <div class="row">

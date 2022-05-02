@@ -37,73 +37,179 @@
                             <br>
 
                             <div class="row">
-                                <div class="col">
-                                    <div class="dropdown">
-                                        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-                                        <div id="myDropdown" class="dropdown-content">
-                                            <input type="text" placeholder="Search.." id="myInput"
-                                                onkeyup="filterFunction()">
-                                            <a href="#about">About</a>
-                                            <a href="#base">Base</a>
-                                            <a href="#blog">Blog</a>
-                                            <a href="#contact">Contact</a>
-                                            <a href="#custom">Custom</a>
-                                            <a href="#support">Support</a>
-                                            <a href="#tools">Tools</a>
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="mobileNumber">Search Customer</label>
+                                    <input required type="text" [(ngModel)]="searchText" name="mobileNumber" class="form-control" id="mobileNumber"
+                                        placeholder="Search...">
+                                
                                 </div>
+
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="productName">Product Name</label>
-                                        <input required type="text" name="productName" class="form-control"
-                                            id="productName" placeholder="Enter Product Name">
+                                        <label>Customers</label>
+                                        <select [class.is-invalid]='saleModule.customerId == null || saleModule.customerId == ""' required
+                                            (change)="onSelectCustomer($event)" class="form-control">
+                                            <option value="">Select</option>
+                                            <option *ngFor="let arr of customerArray | filter:searchText" value="{{arr.id}}">
+                                                {{arr.businessName}} | {{arr.mobileNumber}} | {{arr.city}}</option>
+                                            <option style="color: blue;">Add New Customer</option>
+                                        </select>
                                     </div>
                                 </div>
 
                             </div>
+                            <hr *ngIf="chequeCustomer">
 
-                            <br>
+                            <form [formGroup]="addProductSaleForm">
 
-                            <form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+<div *ngIf="chequeCustomer" class="row">
+    <div class="col">
+        <label for="">Select Product</label>
+        <select
+            [class.is-invalid]='addProductSaleForm.value.product_id == null || addProductSaleForm.value.product_id == ""'
+            required formControlName="product_id" class="form-control">
+            <option value="">Select Product</option>
+            <option *ngFor="let arr of productArray | filter:searchText2" value="{{arr.id}}">
+                {{arr.productName}} | {{arr.productCode}}</option>
+        </select>
+    </div>
+    <div class="col">
+        <label for="">QTY</label>
+        <input [class.is-invalid]='addProductSaleForm.value.qty == null' required type="number" name="qty"
+            formControlName="qty" class="form-control">
+    </div>
+    <div class="col">
+        <label for="">Free Issue</label>
+        <input [class.is-invalid]='addProductSaleForm.value.freeIssue == null' required formControlName="freeIssue"
+            type="number" class="form-control">
+    </div>
+</div>
 
-
-
-
-                                <table class="table table-bordered" formArrayName="stock">
-                                    <tr>
-                                        <th colspan="2"></th>
-                                        <th width="50px"><button style="margin: auto;" type="button"
-                                                (click)="addQuantity()" class="btn btn-primary">Add</button></th>
-                                    </tr>
-                                    <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
-                                        <td>
-                                            Select Product :
-                                            <select formControlName="productId" class="form-control">
-                                                <option *ngFor="let arr of productArray" value="{{arr.id}}">
-                                                    {{arr.productName}}</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            Stock Amount:
-                                            <input required="" type="text" formControlName="stockAmount"
-                                                class="form-control">
-                                        </td>
-                                        <td>
-                                            <br>
-                                            <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
-                                        </td>
-                                    </tr>
-                                </table>
-
-
-
-                                <div class="card-footer">
-                                    <button style="text-align: center;" type="submit"
-                                        class="btn btn-success">Submit</button>
+                                <div>
+                                    <button *ngIf="chequeCustomer" (click)="onAdd()" [disabled]="addProductSaleForm.invalid"
+                                        style="float: right; margin: 10px;" type="submit" class="btn btn-info">Add</button>
                                 </div>
 
                             </form>
+
+                            <br>
+                            <br>
+                            
+                            <hr *ngIf="chequeCustomer && productSaleArrayLength">
+                            <div *ngIf="chequeCustomer && productSaleArrayLength" class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>QTY</th>
+                                            <th>Free Issue</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                            </tr>
+                                    </thead>
+                                    <tbody *ngFor="let arr of productSaleArray">
+                                        <tr>
+                                            <td>{{arr.productName}}</td>
+                                            <td>{{arr.qty}}</td>
+                                            <td>{{arr.freeIssue}}</td>
+                                            <td>{{arr.total | currency: 'Rs. '}}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button type="button" (click)="editProductSale(arr)" class="btn btn-block btn-sm btn-outline-success"><i
+                                                                class="nav-icon fas fa-pen"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button type="button" (click)="removeProductSale(arr.product_id)"
+                                                            class="btn btn-block btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                </td>
+                                                </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <br><br>
+                            
+                            <div *ngIf="chequeCustomer && productSaleArrayLength" class="row">
+                                <div class="col-8"></div>
+                                <div class="col-2">
+                                    <label for="">Net Total</label>
+                                    <input style="text-align: center;" disabled type="text" value="{{netTotal | currency: 'Rs. '}}"
+                                        class="form-control">
+                                </div>
+                            
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label>Payment Type</label>
+                                        <select [class.is-invalid]='saleModule.paymentStatus == null || saleModule.paymentStatus == ""' required
+                                            (change)="onSelectPayment($event)" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="1">Cash</option>
+                                            <option value="2">Credit</option>
+                                            <option value="3">Cheque</option>
+                                            <option value="4">Partial</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr *ngIf="addCheque == 4 || addCheque == 3">
+                            
+                            
+                            <div *ngIf="addCheque == 3" class="row">
+                            
+                                <div class="col-8"></div>
+                            
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label>Account</label>
+                                        <select (change)="onSelectAcound($event)" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="1">BOC</option>
+                                            <option value="2">People</option>
+                                            <option value="3">Sampath</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-2">
+                                    <label for="">Cheque Number</label>
+                                    <input style="text-align: center;" type="number" name="chequeNumber" [(ngModel)]="chequeNumber"
+                                        class="form-control">
+                                </div>
+                            
+                            
+                            </div>
+                            
+                            <hr *ngIf="addCheque == 3">
+                            
+                            <div *ngIf="addCheque == 4 || addCheque == 3" class="row">
+                            
+                                <div class="col-10"></div>
+                            
+                                <div class="col-2">
+                                    <label for="">Paid Amount</label>
+                                    <input style="text-align: center;" type="number" name="paidAmount" [(ngModel)]="paidAmount"
+                                        class="form-control">
+                                </div>
+                            
+                            </div>
+
+
+                                    <hr *ngIf="chequeCustomer && productSaleArrayLength">
+                                
+                                <div *ngIf="chequeCustomer && productSaleArrayLength">
+                                    <button (click)="onSubmit()" style="float: right; margin: 10px;" type="submit" class="btn btn-primary">Add
+                                        Sales</button>
+                                </div>
+
+
+
                         </div>
 
 

@@ -1,15 +1,24 @@
-const { create, getAll, getOne, update, deleteOne, getRouteIdNull, getSumAllProduct, getAllStockGroupByProduct, getStockByRouteId, getStockByRouteProduct } = require('../server/stockServer');
+const {
+    create,
+    getOne,
+    update,
+    deleteOne,
+    stockAmountByRouteIdGroupProductWise,
+    allMainStock,
+    allProductAmountGroupByProduct,
+    stockAmountByRouteProduct,
+} = require('../service/stockServer');
 
 
+// Create new stock (main stock)
 const createStock = (req, res) => {
     const body = req.body;
-
-    console.log(body);
 
     if (body.routeId == null) {
         body.routeId = 0;
     }
 
+    // Add new main stock query
     create(body, (err, results) => {
         if (err) {
             return res.status(500).json({
@@ -25,9 +34,11 @@ const createStock = (req, res) => {
     });
 }
 
+//Get all main stock
+const getAllMainStock = (req, res) => {
 
-const getAllStocksGroupByProductWise = (req, res) => {
-    getAllStockGroupByProduct((err, results) => {
+    // Get all main stock without stock amount 0 query
+    allMainStock((err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
@@ -40,48 +51,6 @@ const getAllStocksGroupByProductWise = (req, res) => {
             success: 1,
             data: results
         });
-    })
-}
-
-const getAllStocks = (req, res) => {
-    getAll((err, results) => {
-        if (err) {
-            return res.status(500).json({
-                success: 0,
-                msg: 'Server error'
-            })
-        }
-
-        return res.status(200).json({
-            success: 1,
-            data: results
-        });
-    })
-}
-
-const getStockAmountByRouteProduct = (req, res) => {
-    const body = req.body;
-
-    getStockByRouteProduct(body, (err, results) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({
-                success: 0,
-                msg: 'Server error'
-            })
-        }
-
-        if (!results) {
-            return res.status(404).json({
-                success: 0,
-                msg: 'Record not found'
-            })
-        } else {
-            return res.status(200).json({
-                success: 1,
-                data: results
-            });
-        }
     })
 }
 
@@ -117,7 +86,7 @@ const getStockById = (req, res) => {
 const getStockByRoute = (req, res) => {
     const routeId = req.params.routeId;
 
-    getStockByRouteId(routeId, (err, results) => {
+    stockAmountByRouteIdGroupProductWise(routeId, (err, results) => {
         if (err) {
             return res.status(500).json({
                 success: 0,
@@ -141,19 +110,32 @@ const getStockByRoute = (req, res) => {
     });
 }
 
-const getMainStock = (req, res) => {
-    getRouteIdNull((err, results) => {
+//Get stock amount by provide route and product
+const getStockAmountByRouteProduct = async (req, res) => {
+    const body = req.body;
+
+    stockAmountByRouteProduct(body, (err, results) => {
+
         if (err) {
+
+            console.log(err);
             return res.status(500).json({
                 success: 0,
                 msg: 'Server error'
             })
         }
 
-        return res.status(200).json({
-            success: 1,
-            data: results
-        });
+        if (!results) {
+            return res.status(404).json({
+                success: 0,
+                msg: 'Record not found'
+            })
+        } else {
+            return res.status(200).json({
+                success: 1,
+                data: results
+            });
+        }
 
     })
 }
@@ -215,7 +197,7 @@ const deleteStock = (req, res) => {
 }
 
 const getSumAllProductWise = (req, res) => {
-    getSumAllProduct((err, results) => {
+    allProductAmountGroupByProduct((err, results) => {
         if (err) {
             return res.status(500).json({
                 success: 0,
@@ -232,13 +214,11 @@ const getSumAllProductWise = (req, res) => {
 
 module.exports = {
     createStock,
-    getAllStocksGroupByProductWise,
-    getAllStocks,
+    getAllMainStock,
     getStockById,
     updateStock,
     deleteStock,
-    getMainStock,
     getStockByRoute,
-    getStockAmountByRouteProduct,
-    getSumAllProductWise
+    getSumAllProductWise,
+    getStockAmountByRouteProduct
 }

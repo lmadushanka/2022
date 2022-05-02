@@ -9,11 +9,11 @@ const {
     updateStockCount,
     getStockAmountByRoute,
     createStock,
-} = require("../server/stockTransferServer");
+} = require("../service/stockTransferServer");
 
 
 // Create stock transfer
-const createStockTransfer = (req, res) => {
+const createStockTransfer = async (req, res) => {
     const body = req.body;
     //  Get main stock count by product id
     getStocksCountByProductId(body.productId, (err, results) => {
@@ -100,7 +100,8 @@ const createStockTransfer = (req, res) => {
 
                         }
 
-                        body.added_at = body.date
+                        body.added_at = body.date;
+                        body.status = 2;
 
                         create(body, (err, results) => {
                             if (err) {
@@ -339,10 +340,10 @@ const updateStockTransfer = (req, res) => {
 
 }
 
-const getStockTransferById = (req, res) => {
+const getStockTransferById = async (req, res) => {
     const id = req.params.id;
 
-    getOneById(id, (err, results) => {
+    await getOneById(id, (err, results) => {
         if (err) {
             return res.status(500).json({
                 success: 0,
@@ -364,8 +365,8 @@ const getStockTransferById = (req, res) => {
     });
 }
 
-const getAllTransfer = (req, res) => {
-    getAll((err, results) => {
+const getAllTransfer = async (req, res) => {
+    await getAll((err, results) => {
         if (err) {
             return res.status(500).json({
                 success: 0,

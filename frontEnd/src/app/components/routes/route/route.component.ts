@@ -15,6 +15,8 @@ export class RouteComponent implements OnInit {
     private router: Router
   ) { }
 
+  lording:any = true;
+
   dataArray:any = [];
   dataArrayLength : any;
   searchText:any;
@@ -26,6 +28,8 @@ export class RouteComponent implements OnInit {
 
   getAllRoutes(){
     this.routeService.getAllRoute().subscribe((res) =>{
+
+      this.lording = false;
 
       this.dataArray = res.data;
 

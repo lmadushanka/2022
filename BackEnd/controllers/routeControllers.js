@@ -1,4 +1,4 @@
-const { create, getOneRoute, getAll, deleteById, update, getAllWithoutOne, getOneRouteByid } = require("../server/routeServer");
+const { create, getOneRoute, getAll, deleteById, update, getAllWithoutOne, getOneRouteByid } = require("../service/routeServer");
 
 
 // add route

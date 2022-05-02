@@ -48,4 +48,34 @@ export class CustomerService {
     return this.http.patch(customerUrl,null,httpOptions);
   }
 
+  getCustomerSalesCount(id:any):Observable<any>{
+    let customerUrl = this.baseUrl.Url+'customer-history/sales-count/'+ id;
+
+    return this.http.get(customerUrl,httpOptions);
+  }
+
+  getCustomerSalesCustomerWise(id:any):Observable<any>{
+    let customerUrl = this.baseUrl.Url+'customer-history/'+ id;
+
+    return this.http.get(customerUrl,httpOptions);
+  }
+
+  customerGrandTotal(id:any):Observable<any>{
+    let customerUrl = this.baseUrl.Url+'customer-history/grand-total/'+ id;
+
+    return this.http.get(customerUrl,httpOptions);
+  }
+
+  customerPaidTotal(id:any):Observable<any>{
+    let customerUrl = this.baseUrl.Url+'customer-history/paid-total/'+ id;
+
+    return this.http.get(customerUrl,httpOptions);
+  }
+
+  getCustomerCount():Observable<any>{
+    let customerUrl = this.baseUrl.Url+'customer/customerCount';
+
+    return this.http.get(customerUrl, httpOptions);
+  }
+
 }

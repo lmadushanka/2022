@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.checkToken();
+    // this.checkToken();
   }
 
   singIn(){
@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
 
       localStorage.setItem('userName', res.data.shortName);
       localStorage.setItem('userRole', res.data.userRole);
+      localStorage.setItem('userId', res.data.id);
       
       if(res.success == 1){
         this.router.navigate(['dashboard/home']).then(()=>{
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
 
         
 
-        // this.router.navigateByUrl('dashboard/home')
+        // this.router.navigateByUrl('dashboard/home');
       }else{
         this.errorMsg = res.msg
       }
@@ -49,6 +50,8 @@ export class LoginComponent implements OnInit {
       
       if(res.success == 1){
         this.router.navigateByUrl('dashboard/home')
+      }else{
+        localStorage.clear();
       }
 
     });

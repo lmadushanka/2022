@@ -20,13 +20,13 @@ export class StockService {
   ) { }
 
   createStock(stockModule:StockModule):Observable<any>{
-    let stockUrl = this.baseUrl.Url+'stock';
+    let stockUrl = this.baseUrl.Url+'stock/';
 
     return this.http.post(stockUrl, stockModule, httpOptions);
   }
 
   getAll():Observable<any>{
-    let stockUrl = this.baseUrl.Url+'stock/all-sum';
+    let stockUrl = this.baseUrl.Url+'stock/';
 
     return this.http.get(stockUrl, httpOptions);
   }
@@ -45,7 +45,7 @@ export class StockService {
 
   getStockAmount(stockModule:any):Observable<any>{
 
-    let stockTransferUrl = this.baseUrl.Url + 'stock/stock-amount';
+    let stockTransferUrl = this.baseUrl.Url + 'stock/amount';
     
 
     return this.http.post(stockTransferUrl, stockModule, httpOptions);
@@ -61,5 +61,11 @@ export class StockService {
     let stockUrl = this.baseUrl.Url+'stock/'+ id;
 
     return this.http.delete(stockUrl, httpOptions);
+  }
+
+  getAllSum():Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock/getAllStockProduct';
+
+    return this.http.get(stockUrl, httpOptions);
   }
 }

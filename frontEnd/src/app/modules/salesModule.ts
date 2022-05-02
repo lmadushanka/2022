@@ -14,9 +14,12 @@ export class SalesModule {
         public totalPrice: any,
         public totalDiscount: any,
         public grandTotal: any,
+        public account: any,
+        public chequeNumber: any,
         public paidAmount: any,
         public salesNote: any,
         public createdAt: any,
+        public productSale: any [],
         
     ){}
 }

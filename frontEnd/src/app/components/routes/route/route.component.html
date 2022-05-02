@@ -58,6 +58,15 @@
                                         <td colspan="7" style="text-align: center;">No data found</td>
                                     </tr>
                                 </tbody>
+                                <tbody *ngIf="lording">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center;">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
                                 <tbody *ngFor="let arr of dataArray | filter:searchText">
 
                                     <tr>

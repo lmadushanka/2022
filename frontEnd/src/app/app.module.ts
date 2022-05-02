@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +35,8 @@ import { EditStockTransferComponent } from './components/stockTransfer/edit-stoc
 import { SaleComponent } from './components/sales/sale/sale.component';
 import { AddSaleComponent } from './components/sales/add-sale/add-sale.component';
 import { EditSaleComponent } from './components/sales/edit-sale/edit-sale.component';
+import { ViewCustomerComponent } from './components/customers/view-customer/view-customer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   {path:'login', component: LoginComponent},
@@ -50,6 +53,7 @@ const appRoutes: Routes = [
       {path: 'customer', component : CustomerComponent},
       {path: 'add-customer', component : AddCustomerComponent},
       {path: 'edit-customer', component : EditCustomerComponent},
+      {path: 'view-customer', component : ViewCustomerComponent},
       {path: 'product', component : ProductComponent},
       {path: 'add-product', component : AddProductComponent},
       {path: 'edit-product', component : EditProductComponent},
@@ -97,6 +101,7 @@ const appRoutes: Routes = [
     SaleComponent,
     AddSaleComponent,
     EditSaleComponent,
+    ViewCustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,7 +109,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     Ng2SearchPipeModule,
     HttpClientModule,
-    AppRoutingModule, RouterModule.forRoot(appRoutes)
+    MatProgressBarModule,
+    AppRoutingModule, RouterModule.forRoot(appRoutes), BrowserAnimationsModule
     
 
   ],

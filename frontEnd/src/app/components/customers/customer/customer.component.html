@@ -30,8 +30,7 @@
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" [(ngModel)]="searchText" name="search" class="form-control float-right"
-                                        placeholder="Search">
+                                    <input type="text" [(ngModel)]="searchText" name="search" class="form-control float-right" placeholder="Search">
 
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-default">
@@ -42,7 +41,9 @@
                             </div>
                         </div>
                         <!-- /.card-header -->
+
                         <div class="card-body table-responsive p-0">
+
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                     <tr>
@@ -54,6 +55,7 @@
                                         <th>City</th>
                                         <th>Address</th>
                                         <th>Credit Limit</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="dataArrayLength == 0">
@@ -61,6 +63,16 @@
                                         <td colspan="7" style="text-align: center;">No data found</td>
                                     </tr>
                                 </tbody>
+                                <tbody *ngIf="lording">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center;">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
                                 <tbody *ngFor="let arr of dataArray | filter:searchText">
 
                                     <tr>
@@ -74,9 +86,14 @@
                                         <td>{{arr.creditLimit}}</td>
                                         <td>
                                             <div class="row">
-                                        
+
                                                 <div class="col">
-                                                    <button type="button" (click)="editCustomer(arr.id)" class="btn btn-block btn-sm btn-outline-success"><i
+                                                    <button type="button" (click)="viewCustomer(arr.id, arr.businessName)"
+                                                        class="btn btn-block btn-sm btn-outline-warning"><i class="nav-icon fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                                    <div class="col">
+                                                        <button type="button" (click)="editCustomer(arr.id)" class="btn btn-block btn-sm btn-outline-success"><i
                                                             class="nav-icon fas fa-pen"></i>
                                                     </button>
                                                 </div>
@@ -85,10 +102,10 @@
                                                         class="btn btn-block btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
                                                     </button>
                                                 </div>
-                                        
-                                        
+
+
                                             </div>
-                                        
+
                                         </td>
                                     </tr>
                                 </tbody>

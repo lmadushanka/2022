@@ -1,5 +1,5 @@
-const { getAll } = require("../server/routeServer");
-const { create, getAllCustomer, update, getWithoutOne, getById, deleteCustomer, customerCount } = require('../server/customerServer');
+const { getAll } = require("../service/routeServer");
+const { create, getAllCustomer, update, getWithoutOne, getById, deleteCustomer, customerCount } = require('../service/customerServer');
 
 const createCustomer = (req, res) => {
     const body = req.body;

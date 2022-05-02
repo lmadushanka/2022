@@ -15,6 +15,8 @@ export class ViewStockAreaWiseComponent implements OnInit {
   dataArrayLength : any;
   searchText:any;
 
+  lording:any = true;
+
   routeArray:any = [];
 
   constructor(
@@ -29,7 +31,9 @@ export class ViewStockAreaWiseComponent implements OnInit {
     this.getAllRoute();
 
 
-    this.stockService.getStockByRoute(0).subscribe((res) =>{
+    this.stockService.getAllSum().subscribe((res) =>{
+
+      this.lording = false;
 
       this.dataArray = res.data;
 
@@ -43,37 +47,58 @@ export class ViewStockAreaWiseComponent implements OnInit {
       }
 
       this.dataArrayLength = this.dataArray.length;
-      
-      
     })
   }
 
   getAllRoute(){
     this.routeService.getAllRoute().subscribe((res) =>{
+
+      this.lording = false;
+      
       this.routeArray = res.data;
       
     })
   }
 
   onSelectRoute(data:any){
+
+    if(data.target.value == ""){
+      
+      this.stockService.getAllSum().subscribe((res) =>{
+        this.dataArray = res.data;
+  
+        for(let i = 0; i < res.data.length; i++){
+          this.productService.getProductById(this.dataArray[i].productId).subscribe((res) =>{
+            
+            this.dataArray[i].productName = res.data.productName;
+  
+            this.dataArray[i].productCode = res.data.productCode;
+          });
+        }
+  
+        this.dataArrayLength = this.dataArray.length;
+      })
+    }else{
+      this.stockService.getStockByRoute(data.target.value).subscribe((res) =>{
+
+        this.dataArray = res.data;
+  
+        for(let i = 0; i < res.data.length; i++){
+          this.productService.getProductById(this.dataArray[i].productId).subscribe((res) =>{
+            
+            this.dataArray[i].productName = res.data.productName;
+  
+            this.dataArray[i].productCode = res.data.productCode;
+          });
+        }
+  
+        this.dataArrayLength = this.dataArray.length;
+        
+        
+      })
+    }
     
-    this.stockService.getStockByRoute(data.target.value).subscribe((res) =>{
-
-      this.dataArray = res.data;
-
-      for(let i = 0; i < res.data.length; i++){
-        this.productService.getProductById(this.dataArray[i].productId).subscribe((res) =>{
-          
-          this.dataArray[i].productName = res.data.productName;
-
-          this.dataArray[i].productCode = res.data.productCode;
-        });
-      }
-
-      this.dataArrayLength = this.dataArray.length;
-      
-      
-    })
+    
     
   }
 

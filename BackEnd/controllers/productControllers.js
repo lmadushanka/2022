@@ -1,4 +1,4 @@
-const { create, getOne, getAll, update, deleteOne, checkDuplicated } = require("../server/productServer");
+const { create, getOne, getAll, update, deleteOne, checkDuplicated } = require("../service/productServer");
 
 const createProduct = async (req, res) => {
     const body = req.body;

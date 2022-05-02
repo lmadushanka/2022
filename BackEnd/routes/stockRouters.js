@@ -1,12 +1,24 @@
 const router = require("express").Router();
 const { checkToken } = require("../middleware/auth")
 
-const { createStock, getAllStocks, getStockById, updateStock, getSumAllProductWise, getStockAmountByRouteProduct, deleteStock, getMainStock, getAllStocksGroupByProductWise, getStockByRoute } = require('../controllers/sotckController');
+const {
+    createStock,
+    getAllMainStock,
+    getStockById,
+    updateStock,
+    getSumAllProductWise,
+    deleteStock,
+    getStockByRoute,
+    getStockAmountByRouteProduct
+} = require('../controllers/sotckController');
 
+router.post('/', checkToken, createStock);
+router.get('/', checkToken, getAllMainStock);
 router.get('/getAllStockProduct', checkToken, getSumAllProductWise);
-router.post('/', checkToken, createStock).get('/', checkToken, getAllStocks).get('/main', checkToken, getMainStock).get('/all-sum', checkToken, getAllStocksGroupByProductWise);
-router.get('/:id', checkToken, getStockById).delete('/:id', checkToken, deleteStock).patch('/:id', checkToken, updateStock);
+router.post('/amount', checkToken, getStockAmountByRouteProduct);
+router.get('/:id', checkToken, getStockById);
 router.get('/route/:routeId', checkToken, getStockByRoute);
-router.post('/stock-amount', checkToken, getStockAmountByRouteProduct);
+router.delete('/:id', checkToken, deleteStock);
+router.patch('/:id', checkToken, updateStock);
 
 module.exports = router;

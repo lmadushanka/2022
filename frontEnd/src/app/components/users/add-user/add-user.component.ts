@@ -21,6 +21,8 @@ export class AddUserComponent implements OnInit {
   confirmPassword = '';
   checkPass:any;
 
+  checkUserRole:any = true;
+
   constructor(
     private userService: UserService,
     private routeService: RouteService,
@@ -41,6 +43,11 @@ export class AddUserComponent implements OnInit {
 
 
   addUser(){
+
+    if(this.userModule.route == ''){
+      this.userModule.route = '0';
+    }
+    
 
     Swal.fire({
       title: 'Are you sure?',
@@ -109,6 +116,13 @@ export class AddUserComponent implements OnInit {
 
   onSelectUserRole(data:any){
     this.userModule.userRole = data.target.value;
+
+    if(data.target.value == '0' || data.target.value == '3'){
+      this.checkUserRole = false;
+    }else{
+      this.checkUserRole = true;
+    }
+    
   }
 
   checkPassword(){

@@ -21,15 +21,21 @@ export class CustomerComponent implements OnInit {
   dataArrayLength : any;
   searchText:any;
 
+  lording:any = true;
+
   ngOnInit(): void {
     localStorage.removeItem('customerIdForUpdateCustomer');
+    localStorage.removeItem('customerIdForViewCustomer');
+    localStorage.removeItem('customerNameForViewCustomer');
     this.getAllCustomer();
   }
 
   getAllCustomer(){
     this.customerService.getAllCustomer().subscribe((res) =>{
+      this.lording = false;
 
       this.dataArray = res.data;
+
 
       this.dataArrayLength = this.dataArray.length;
 
@@ -106,6 +112,14 @@ export class CustomerComponent implements OnInit {
         })
       }
     })
+  }
+
+  viewCustomer(id:any, businessName:any){
+    localStorage.setItem('customerIdForViewCustomer', id);
+    localStorage.setItem('customerNameForViewCustomer', businessName);
+
+    this.router.navigateByUrl('dashboard/view-customer');
+    
   }
 
 }

@@ -17,6 +17,8 @@ export class StockTransferComponent implements OnInit {
   dataArrayLength : any;
   searchText:any;
 
+  lording:any = true;
+
   stockTransferModule = new StockTransferModule('','','','','','','','','','','');
 
   constructor(
@@ -33,6 +35,7 @@ export class StockTransferComponent implements OnInit {
   getStockTransfer(){
     this.stockTransferService.getAllStockTransfer().subscribe((res) =>{
       
+      this.lording = false;
       
       this.dataArray = this.stockTransferModule;
       this.dataArray = res.msg;

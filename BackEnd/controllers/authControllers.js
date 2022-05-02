@@ -1,23 +1,26 @@
-const { getUserByUserEmail } = require("../server/authServer");
+const { getUserByUserEmail } = require("../service/authServer");
 
 const { verify } = require("jsonwebtoken");
 
-const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+const { compareSync } = require("bcryptjs");
 
 const { sign } = require("jsonwebtoken");
 
 const login = async (req, res) => {
     const body = req.body;
     getUserByUserEmail(body.email, (err, results) => {
+
         if (err) {
             console.log(err);
         }
-        if (!results) {
+
+        if (!results) { 
             return res.json({
                 success: 0,
                 msg: "Invalid email or password"
             });
         }
+
         const result = compareSync(body.password, results.password);
         if (result) {
             results.password = undefined;

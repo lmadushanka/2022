@@ -22,7 +22,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.checkValidation();
+    // this.checkValidation();
+
+    // window.location.reload();
 
     this.userName = localStorage.getItem('userName');
     this.userRole = localStorage.getItem('userRole');
@@ -40,6 +42,12 @@ export class HeaderComponent implements OnInit {
         
       }
     })
+  }
+
+  onLogOut(){
+    localStorage.clear();
+
+    this.router.navigateByUrl('/login')
   }
 
 }

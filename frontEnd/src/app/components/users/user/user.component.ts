@@ -16,6 +16,8 @@ export class UserComponent implements OnInit {
   dataArrayLength : any;
   searchText:any;
 
+  lording:any = true;
+
   constructor(
     private userService: UserService,
     private routeService : RouteService,
@@ -30,6 +32,8 @@ export class UserComponent implements OnInit {
   getAllUser(){
     this.userService.getAllUser().subscribe((res) =>{
 
+      this.lording = false;
+      
       this.dataArray = res.data;
 
       for(let i = 0; i < res.data.length; i++){

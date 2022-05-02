@@ -13,7 +13,7 @@ const {
     filterSalesByPaymentStatus,
     filterSalesBySalesStatus,
     filterAllStatus
-} = require('../server/salesServer');
+} = require('../service/salesServer');
 
 const addSale = (req, res) => {
     const body = req.body
@@ -21,11 +21,7 @@ const addSale = (req, res) => {
     console.log(body);
 
 
-    if (
-        body.customerId != null && body.userId != null && body.paymentStatus != null && body.salesSatatus != null
-        && body.totalQty != null, body.totalPrice != null && body.grandTotal != null && body.paidAmount != null
-        && body.productSale.length > 0
-    ) {
+    if (body.customerId != "" && body.userId != "" && body.productSale.length > 0) {
         getRouteId(body.customerId, (err, results) => {
             if (err) {
 
@@ -112,7 +108,7 @@ const addSale = (req, res) => {
 
                 }
 
-                if (results && results2) {
+                if (results || results2) {
                     res.status(200).json({
                         success: 1,
                         data: results2
@@ -135,9 +131,9 @@ const updateSales = (req, res) => {
     body.id = req.params.id;
 
     if (
-        body.customerId != null && body.userId != null && body.paymentStatus != null && body.salesSatatus != null
-        && body.totalQty != null, body.totalPrice != null && body.grandTotal != null && body.paidAmount != null
-        && body.productSale.length > 0
+        body.customerId != "" || body.userId != "" || body.paymentStatus != "" || body.salesSatatus != ""
+        || body.totalQty != "", body.totalPrice != "" || body.grandTotal != "" || body.paidAmount != ""
+        || body.productSale.length > 0
     ) {
         getOneSale(body.id, (err, results) => {
 
@@ -484,7 +480,7 @@ const filterSalesById = (req, res) => {
     body.paymentStatus = req.params.paymentStatus;
     body.salesStataus = req.params.salesStatus;
 
-    if (body.paymentStatus != 'undefined' && body.salesStataus == 'undefined') {
+    if (body.paymentStatus != 'undefined' || body.salesStataus == 'undefined') {
 
         filterSalesByPaymentStatus(body, (err, results) => {
             if (err) {
@@ -507,7 +503,7 @@ const filterSalesById = (req, res) => {
                 })
             }
         })
-    } else if (body.paymentStatus == 'undefined' && body.salesStataus != 'undefined') {
+    } else if (body.paymentStatus == 'undefined' || body.salesStataus != 'undefined') {
 
         filterSalesBySalesStatus(body, (err, results) => {
             if (err) {
@@ -530,7 +526,7 @@ const filterSalesById = (req, res) => {
                 })
             }
         })
-    } else if (body.paymentStatus != 'undefined' && body.salesStataus != 'undefined') {
+    } else if (body.paymentStatus != 'undefined' || body.salesStataus != 'undefined') {
 
         filterAllStatus(body, (err, results) => {
             if (err) {

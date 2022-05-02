@@ -16,6 +16,8 @@ export class ProductComponent implements OnInit {
     private router: Router
   ) { }
 
+  lording:any = true;
+
   dataArray:any = [];
   dataArrayLength : any;
   searchText:any;
@@ -27,6 +29,9 @@ export class ProductComponent implements OnInit {
 
   getAllProduct(){
     this.productService.getAllProduct().subscribe((res) =>{
+
+      this.lording = false;
+      
       this.dataArray = res.data;
 
       this.dataArrayLength = this.dataArray.length;

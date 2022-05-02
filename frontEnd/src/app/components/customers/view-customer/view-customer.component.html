@@ -1,0 +1,220 @@
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <button type="button" routerLink="/dashboard/customer"
+                            class="btn btn-block btn-sm btn-outline-primary">Customer</button>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/customer">Customer</a></li>
+                        <li class="breadcrumb-item active">{{businessName}}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{salesCount}}</h3>
+                            <p>Total Sales</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{grandTotal | currency: 'Rs. '}}</h3>
+                            <p>Total Sale Amount</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{{totalPaidAmount | currency: 'Rs. '}}</h3>
+                            <p>Total Paid</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{totalDueAmount | currency: 'Rs. '}}</h3>
+                            <p>Total Credit</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    </section>
+
+
+
+
+    <section class="content">
+        <div class="container-fluid">
+
+            <hr>
+
+            <div class="row">
+                <div style="margin: auto;" class="col-2">
+                    <div class="form-group">
+                        <label for="">Filter Payment Status</label>
+                        <select (change)="onFilterPaymentStatus($event)" class="form-control">
+                            <option value="0">All</option>
+                            <option value="1">Cash</option>
+                            <option value="2">Credit</option>
+                            <option value="3">Cheque</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin: auto;" class="col-2">
+                    <div class="form-group">
+                        <label for="">Filter Sales Status</label>
+                        <select (change)="onFilterSalesStatus($event)" class="form-control">
+                            <option value="0">All</option>
+                            <option value="1">Complete</option>
+                            <option value="2">Due</option>
+                            <option value="3">Partial</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Sales Table</h3>
+
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" [(ngModel)]="searchText" name="search"
+                                        class="form-control float-right" placeholder="Search">
+
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice No</th>
+                                        <th>Payment Status</th>
+                                        <th>Sales Status</th>
+                                        <th>Total Qty</th>
+                                        <th>Free Issue</th>
+                                        <th>Total Price</th>
+                                        <th>Total Discount</th>
+                                        <th>Grand Total</th>
+                                        <th>Paid Amount</th>
+                                        <th>Sales Not</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="dataArrayLength == 0">
+                                    <tr>
+                                        <td colspan="12" style="text-align: center;">No data found</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngFor="let arr of dataArray | filter:filterPayment | filter:searchText">
+
+                                    <tr>
+                                        <td>{{arr.id}}</td>
+                                        <td *ngIf="arr.paymentStatus == 1"> <span
+                                                class="right badge badge-success">Cash</span></td>
+                                        <td *ngIf="arr.paymentStatus == 2"><span
+                                                class="right badge badge-danger">Credit</span></td>
+                                        <td *ngIf="arr.paymentStatus == 3"><span
+                                                class="right badge badge-danger">Cheque</span></td>
+                                        <td *ngIf="arr.salesSatatus == 1"> <span
+                                                class="right badge badge-primary">Complete</span> </td>
+                                        <td *ngIf="arr.salesSatatus == 2"><span
+                                                class="right badge badge-warning">Due</span></td>
+                                        <td *ngIf="arr.salesSatatus == 3"><span
+                                                class="right badge badge-warning">Partial</span></td>
+                                        <td>{{arr.totalQty}}</td>
+                                        <td>{{arr.freeIssue}}</td>
+                                        <td>{{arr.totalPrice | currency: 'Rs. '}}</td>
+                                        <td>{{arr.totalDiscount | currency: 'Rs. '}}</td>
+                                        <td>{{arr.grandTotal | currency: 'Rs. '}}</td>
+                                        <td>{{arr.paidAmount | currency: 'Rs. '}}</td>
+                                        <td>{{arr.salesNote}}</td>
+                                        <td>
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <button type="button" (click)="editSale()"
+                                                        class="btn btn-block btn-sm btn-outline-success"><i
+                                                            class="nav-icon fas fa-pen"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button type="button" (click)="deleteSale()"
+                                                        class="btn btn-block btn-sm btn-outline-danger"><i
+                                                            class="nav-icon fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

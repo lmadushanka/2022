@@ -4,7 +4,7 @@ const {
     customerWiseSalesCount,
     customerWiseToalDiscount,
     customerWiseTotalPaid,
-} = require('../server/customerHistoryServer');
+} = require('../service/customerHistoryServer');
 
 const getSalesCountCustomerWise = (req, res) => {
     const id = req.params.id;

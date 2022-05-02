@@ -1,7 +1,10 @@
-require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require('cors')
+
+const morgan = require('morgan');
+
+const notFoundMiddlware = require('./middleware/not-found');
 
 const userRouter = require("./routes/userRoutes");
 const loginRouter = require("./routes/authRoutes");
@@ -13,8 +16,13 @@ const stockTransfer = require("./routes/stockTransferRoutes");
 const salesRouter = require("./routes/salesRoutes");
 const customerHistoryRouter = require("./routes/customerHistoryRouter");
 
+app.use(cors({
+    origin: "*"
+}));
+
+app.use(morgan('tiny'));
 app.use(express.json());
-app.use(cors());
+
 
 app.use("/api/v1/user/", userRouter);
 app.use("/api/v1/login/", loginRouter);
@@ -26,9 +34,12 @@ app.use("/api/v1/stockTransfer/", stockTransfer);
 app.use("/api/v1/sales/", salesRouter);
 app.use("/api/v1/customer-history/", customerHistoryRouter);
 
-module.exports = app
+app.use(notFoundMiddlware);
 
-app.listen(process.env.APP_PORT, () => {
-    console.log(`Server is listening port ${process.env.APP_PORT}`);
-});
 
+module.exports = app;
+
+
+app.listen(5000, () => {
+    console.log('Server is listening on port 5000...');
+})

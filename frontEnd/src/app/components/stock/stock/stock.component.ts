@@ -15,6 +15,8 @@ export class StockComponent implements OnInit {
   dataArrayLength : any;
   searchText:any;
 
+  lording:any = true;
+
   constructor(
     private stockService: StockService,
     private productService: ProductService,
@@ -56,6 +58,8 @@ export class StockComponent implements OnInit {
 
   getAllStock(){
     this.stockService.getAll().subscribe((res) =>{
+      
+      this.lording = false;
       
       this.dataArray = res.data;
 

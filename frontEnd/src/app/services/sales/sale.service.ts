@@ -19,6 +19,13 @@ export class SaleService {
     private http: HttpClient
   ) { }
 
+
+  addSale(saleModule : SalesModule):Observable<any>{
+    let salesUrl = this.baseUrl.Url + 'sales'
+
+    return this.http.post(salesUrl,saleModule, httpOptions);
+  }
+
   getAllSales():Observable<any>{
     let salesUrl = this.baseUrl.Url + 'sales'
 
@@ -27,6 +34,12 @@ export class SaleService {
 
   getFreeIssue(id:any):Observable<any>{
     let salesUrl = this.baseUrl.Url + 'sales/free-issue/' + id;
+
+    return this.http.get(salesUrl, httpOptions);
+  }
+
+  filterSales(paymentStatus:any, salesStatus:any):Observable<any>{
+    let salesUrl = this.baseUrl.Url + 'sales/filter/'+paymentStatus+'/'+salesStatus;
 
     return this.http.get(salesUrl, httpOptions);
   }
