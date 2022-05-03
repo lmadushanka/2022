@@ -55,7 +55,7 @@
                                         <th>City</th>
                                         <th>Address</th>
                                         <th>Credit Limit</th>
-                                        <th>Action</th>
+                                        <th width="5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="dataArrayLength == 0">
@@ -91,6 +91,7 @@
                                                     <button type="button" (click)="viewCustomer(arr.id, arr.businessName)"
                                                         class="btn btn-block btn-sm btn-outline-warning"><i class="nav-icon fas fa-eye"></i>
                                                     </button>
+                                                    
                                                 </div>
                                                     <div class="col">
                                                         <button type="button" (click)="editCustomer(arr.id)" class="btn btn-block btn-sm btn-outline-success"><i

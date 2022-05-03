@@ -32,7 +32,6 @@ export class CustomerComponent implements OnInit {
 
   getAllCustomer(){
     this.customerService.getAllCustomer().subscribe((res) =>{
-      this.lording = false;
 
       this.dataArray = res.data;
 
@@ -42,8 +41,13 @@ export class CustomerComponent implements OnInit {
       for(let i =0; i < res.data.length; i++){
         this.routeService.getRouteById(res.data[i].routeId).subscribe((res) =>{
           this.dataArray[i].routeName = res.data.routeName;
+
+          this.lording = false;
         });
+      
       }
+
+      
       
     })
   }

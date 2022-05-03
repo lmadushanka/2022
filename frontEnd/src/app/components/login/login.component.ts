@@ -14,6 +14,11 @@ export class LoginComponent implements OnInit {
 
   loginModule = new Auth('','');
 
+  lordingButton:any = false;
+
+  defaultButton:any = true;
+
+
   constructor(
     private authService : AuthService,
     private router : Router
@@ -24,22 +29,30 @@ export class LoginComponent implements OnInit {
   }
 
   singIn(){
-    this.authService.signIn(this.loginModule).subscribe((res) =>{
-      localStorage.setItem('token', res.token);
 
-      localStorage.setItem('userName', res.data.shortName);
-      localStorage.setItem('userRole', res.data.userRole);
-      localStorage.setItem('userId', res.data.id);
+    this.defaultButton = false;
+    this.lordingButton = true;
+
+    this.authService.signIn(this.loginModule).subscribe((res) =>{
       
       if(res.success == 1){
+
+        localStorage.setItem('token', res.token);
+
+        localStorage.setItem('userName', res.data.shortName);
+        localStorage.setItem('userRole', res.data.userRole);
+        localStorage.setItem('userId', res.data.id);
+      
         this.router.navigate(['dashboard/home']).then(()=>{
           window.location.reload();
         }) 
-
-        
-
         // this.router.navigateByUrl('dashboard/home');
-      }else{
+      }
+      
+      if(res.success == 0){
+        
+        this.defaultButton = true;
+        this.lordingButton = false;
         this.errorMsg = res.msg
       }
     });

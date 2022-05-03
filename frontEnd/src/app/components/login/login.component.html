@@ -30,8 +30,12 @@
             </div>
 
             <div style="float: right; margin: 10px;">
-                <button [disabled]="loginForm.form.invalid" type="submit" (click)="singIn()"
+                <button *ngIf="defaultButton" [disabled]="loginForm.form.invalid" type="submit" (click)="singIn()"
                     class="btn btn-primary">Submit</button>
+                <button *ngIf="lordingButton" class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
             </div>
         </form>
     </div>
