@@ -18,9 +18,7 @@ const customerHistoryRouter = require("./routes/customerHistoryRouter");
 const wastageRouter = require("./routes/wastageStockRoutes");
 const stockReturnRouter = require("./routes/stockReturnRouters");
 
-app.use(cors({
-    origin: "*"
-}));
+app.use(cors());
 
 app.use(morgan('tiny'));
 app.use(express.json());
