@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product/product.service';
 import { StockService } from 'src/app/services/stock/stock.service';
+import { StockModule } from '../../../modules/stockModule';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,6 +15,8 @@ export class StockComponent implements OnInit {
   dataArray:any = [];
   dataArrayLength : any;
   searchText:any;
+
+  stockModule = new StockModule('','','','','','','','');
 
   lording:any = true;
 
@@ -58,13 +61,16 @@ export class StockComponent implements OnInit {
 
   getAllStock(){
     this.stockService.getAll().subscribe((res) =>{
+
+      console.log(res);
+      
       
       this.lording = false;
       
       this.dataArray = res.data;
 
       for(let i = 0; i < res.data.length; i++){
-        this.productService.getProductById(this.dataArray[i].productId).subscribe((res) =>{
+        this.productService.getProductById(this.dataArray[i].product_id).subscribe((res) =>{
           
           this.dataArray[i].productName = res.data.productName;
 
@@ -139,6 +145,39 @@ export class StockComponent implements OnInit {
         })
       }
     })
+  }
+
+  onApprove(id:any, qty:any){
+    Swal.fire({
+      title: 'Do you want to approve or reject?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Approved',
+      denyButtonText: `Rejected`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+
+        this.stockModule.recieved = qty;
+
+        this.stockService.updateRecieved(this.stockModule, id).subscribe((res) =>{
+          
+          Swal.fire('Stock approved!', '', 'success')
+          this.getAllStock();
+        })
+      } else if (result.isDenied) {
+
+        this.stockService.rejectStock(this.stockModule, id).subscribe((res) =>{
+          Swal.fire('Stock rejected!', '', 'error')
+
+          this.getAllStock();
+        })
+        
+      }
+    })
+
+    console.log(this.stockModule);
+    
   }
 
   printStock(){

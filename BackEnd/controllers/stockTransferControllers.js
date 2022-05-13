@@ -1,419 +1,429 @@
 const {
+    stockByProductId,
+    stockQtySumById
+} = require('../service/stockService');
+
+const {
     create,
-    getOneById,
-    getAll,
-    update,
-    getAllStocksByProductIdOrderByASC,
-    getAllStocksByProductIdOrderByASCWith0Stock,
-    getStocksCountByProductId,
-    updateStockCount,
-    getStockAmountByRoute,
-    createStock,
-} = require("../service/stockTransferServer");
+    allStockTransfer,
+    stockTransferById,
+    stockTransferByRouteIdAndProductId,
+    updateStockTransferQty,
+    updateStockQty,
+} = require('../service/stockTransferService');
 
+const addStockTransfer = (req, res) => {
 
-// Create stock transfer
-const createStockTransfer = async (req, res) => {
+    const dateTime = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Colombo' });
+
     const body = req.body;
-    //  Get main stock count by product id
-    getStocksCountByProductId(body.productId, (err, results) => {
-        if (err) {
-            return res.status(500).json({
-                success: 0,
-                msg: err
-            })
-        }
+    body.created_at = dateTime;
+    body.status = 2;
 
-        if (!results) {
-            return res.status(400).json({
+    stockQtySumById(body.productId, (err, resultFromAvailableQty) => {
+
+
+        if (
+            body.productId == '' || body.productId == null ||
+            body.routeId == '' || body.routeId == null ||
+            body.qty == '' || body.qty == null || body.qty == 0
+        ) {
+
+            res.status(400).json({
                 success: 0,
-                msg: 'Record not found'
+                msg: 'Check the input data'
             })
         } else {
 
-            if (results.stockAmount > body.stock) {
-                //Get stock list by product id
-                getAllStocksByProductIdOrderByASC(body.productId, (err, results) => {
-                    if (err) {
-                        return res.status(500).json({
-                            success: 0,
-                            msg: err
-                        })
+            if (body.qty <= resultFromAvailableQty.qty) {
+
+                stockByProductId(body.productId, (err, resultsByProductWise) => {
+
+                    let remainingWastageStock = body.qty;
+
+                    for (i = 0; i < resultsByProductWise.length; i++) {
+
+                        if (remainingWastageStock == resultsByProductWise[i].qty) {
+
+                            body.stockId = resultsByProductWise[i].id;
+                            body.stockQty = 0;
+                            body.updated_at = dateTime;
+
+
+                            updateStockQty(body, (err, resultsForUpdateStock) => {
+                                    if (err) {
+                                        console.log(err);
+
+                                        res.status(500).json({
+                                            success: 0,
+                                            msg: 'Database error by update stock!',
+                                            error: err
+                                        })
+                                    }
+                            })
+
+                            remainingWastageStock = 0;
+
+                            i = resultsByProductWise.length;
+
+                        } else if (remainingWastageStock < resultsByProductWise[i].qty && remainingWastageStock > 0) {
+
+                            body.stockId = resultsByProductWise[i].id;
+                            body.stockQty = resultsByProductWise[i].qty - remainingWastageStock;
+                            body.updated_at = dateTime;
+
+                            updateStockQty(body, (err, resultsForUpdateStock) => {
+                                if (err) {
+                                    console.log(err);
+
+                                    res.status(500).json({
+                                        success: 0,
+                                        msg: 'Database error by update stock!',
+                                        error: err
+                                    })
+                                }
+                            })
+
+                            remainingWastageStock = 0;
+
+                            i = resultsByProductWise.length;
+                        } else if (remainingWastageStock > resultsByProductWise[i].qty) {
+
+                            body.stockId = resultsByProductWise[i].id;
+                            body.stockQty = 0;
+                            body.updated_at = dateTime;
+
+                            updateStockQty(body, (err, resultsForUpdateStock) => {
+                                if (err) {
+                                    console.log(err);
+
+                                    res.status(500).json({
+                                        success: 0,
+                                        msg: 'Database error by update stock!',
+                                        error: err
+                                    })
+                                }
+
+
+                            })
+
+                            remainingWastageStock = remainingWastageStock - resultsByProductWise[i].qty;
+                        }
                     }
 
-                    if (!results) {
-                        return res.status(400).json({
-                            success: 0,
-                            msg: "Record not found"
-                        });
-                    } else {
 
-                        let remainingStock = body.stock
+                    body.updated_at = null;
 
-                        for (i = 0; i < results.length; i++) {
+                    create(body, (err, results) => {
+                        if (err) {
+                            console.log(err);
 
-                            if (results[i].stock <= remainingStock) {
-                                remainingStock = remainingStock - results[i].stock;
-
-                                body.stockId = results[i].id;
-
-                                if (remainingStock > 0) {
-                                    body.remainingStock = 0;
-                                } else {
-                                    body.remainingStock = remainingStock;
-                                }
-
-
-
-                                updateStockCount(body, (err, results) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            success: 0,
-                                            msg: 'Database error'
-                                        })
-                                    }
-                                });
-
-                                if (remainingStock == 0) {
-                                    i = res.length
-                                }
-
-                            } else if (results[i].stock > remainingStock) {
-
-                                remainingStock = results[i].stock - remainingStock;
-
-                                body.stockId = results[i].id;
-
-                                body.remainingStock = remainingStock;
-
-                                updateStockCount(body, (err, results) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            success: 0,
-                                            msg: err
-                                        })
-                                    }
-                                });
-
-                                i = res.length
-                            }
-
+                            res.status(500).json({
+                                success: 0,
+                                msg: 'Database error!',
+                                error: err
+                            })
                         }
 
-                        body.added_at = body.date;
-                        body.status = 2;
+                        res.status(200).json({
+                            success: 1,
+                            data: results
+                        })
 
-                        create(body, (err, results) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    success: 0,
-                                    msg: err
-                                })
-                            }
+                    })
+                })
 
-                            return res.status(200).json({
-                                success: 1,
-                                data: results
-                            })
-                        });
-
-                        createStock(body, (err, results) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    success: 0,
-                                    msg: 'Server error'
-                                })
-                            }
-                        });
-
-                    }
-                });
             } else {
-                return res.status(400).json({
+                res.status(400).json({
                     success: 0,
                     msg: 'Not enough stock'
                 })
             }
 
         }
-    })
 
 
-}
-
-
-// Update stock transfer
-const updateStockTransfer = (req, res) => {
-
-    const body = req.body;
-    body.id = req.params.id;
-
-    // Check record availability
-    getOneById(body.id, (err, results) => {
-        if (err) {
-            return res.status(500).json({
-                success: 0,
-                msg: err
-            });
-        }
-
-        if (!results) {
-            return res.status(404).json({
-                success: 0,
-                msg: 'Record not found'
-            })
-        } else {
-            // Check whether there is a decrease or increase
-
-            //Same
-            if (body.stock == results.stock) {
-
-                return res.status(400).json({
-                    success: 0,
-                    msg: 'Nothing to change'
-                })
-
-            }
-            //Increase
-            else if (body.stock > results.stock) {
-
-                getAllStocksByProductIdOrderByASC(results.productId, (err, results2) => {
-                    if (err) {
-                        return res.status(500).json({
-                            success: 0,
-                            msg: err
-                        })
-                    }
-
-                    // Check stock availability
-                    if (!results2) {
-                        return res.status(404).json({
-                            success: 0,
-                            msg: 'Not enough stock'
-                        })
-                    } else {
-                        let stockDefferent = body.stock - results.stock;
-
-                        for (i = 0; i < results2.length; i++) {
-
-                            if (results2[i].stock == stockDefferent) {
-
-                                const remainingStock = 0;
-
-                                body.stockId = results2[i].id;
-
-                                body.remainingStock = remainingStock;
-
-                                updateStockCount(body, (err, results) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            success: 0,
-                                            msg: err
-                                        })
-                                    }
-                                });
-
-                                i = res.length
-
-                            } else if (results2[i].stock > stockDefferent) {
-
-                                const remainingStock = results2[i].stock - stockDefferent;
-
-                                body.stockId = results2[i].id;
-
-                                body.remainingStock = remainingStock;
-
-                                updateStockCount(body, (err, results) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            success: 0,
-                                            msg: err
-                                        })
-                                    }
-                                });
-
-                                i = res.length
-
-                            } else if (results2[i].stock < stockDefferent) {
-
-                                stockDefferent = stockDefferent - results2[i].stock;
-
-                                body.stockId = results2[i].id;
-
-                                body.remainingStock = 0;
-
-                                updateStockCount(body, (err, results) => {
-                                    if (err) {
-                                        return res.status(500).json({
-                                            success: 0,
-                                            msg: err
-                                        })
-                                    }
-                                });
-                            }
-
-                        }
-
-                        update(body, (err, results) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    success: 0,
-                                    msg: err
-                                })
-                            }
-
-                            return res.status(200).json({
-                                success: 1,
-                                msg: results
-                            })
-
-                        })
-                    }
-                });
-
-            }
-            //Decrease
-            else if (body.stock < results.stock) {
-
-                getAllStocksByProductIdOrderByASCWith0Stock(results.productId, (err, results2) => {
-                    if (err) {
-                        return res.status(500).json({
-                            success: 0,
-                            msg: err
-                        })
-                    }
-
-                    // Check stock availability
-                    if (!results2) {
-                        return res.status(404).json({
-                            success: 0,
-                            msg: 'Record not found'
-                        })
-
-
-                    } else {
-                        let stockDefferent = results.stock - body.stock;
-
-                        for (i = 0; i < results2.length; i++) {
-
-                            const remainingStock = results2[i].stock + stockDefferent;
-
-                            body.stockId = results2[i].id;
-
-                            body.remainingStock = remainingStock;
-
-                            updateStockCount(body, (err, results) => {
-                                if (err) {
-                                    return res.status(500).json({
-                                        success: 0,
-                                        msg: err
-                                    })
-                                }
-                            });
-
-                            i = results2.length;
-
-                        }
-
-                        update(body, (err, results) => {
-                            if (err) {
-                                return res.status(500).json({
-                                    success: 0,
-                                    msg: err
-                                })
-                            }
-
-                            return res.status(200).json({
-                                success: 1,
-                                msg: results
-                            })
-
-                        })
-
-
-                    }
-                });
-            }
-        }
-    })
-
+    });
 
 }
 
-const getStockTransferById = async (req, res) => {
-    const id = req.params.id;
+const getAllStockTransfer = (req, res) => {
 
-    await getOneById(id, (err, results) => {
+    allStockTransfer((err, results) => {
         if (err) {
-            return res.status(500).json({
+            console.log(err);
+
+            res.status(500).json({
                 success: 0,
-                msg: err
+                msg: 'Database error!'
             })
         }
 
         if (!results) {
-            return res.status(400).json({
+            res.status(404).json({
                 success: 0,
                 msg: 'Record not found!'
             })
         } else {
-            return res.status(200).json({
+            res.status(200).json({
                 success: 1,
-                msg: results
+                data: results
             })
         }
-    });
+    })
 }
 
-const getAllTransfer = async (req, res) => {
-    await getAll((err, results) => {
+
+const getStockTransferById = (req, res) => {
+
+    const id = req.params.id;
+
+    stockTransferById(id, (err, results) => {
         if (err) {
-            return res.status(500).json({
+            console.log(err);
+
+            res.status(500).json({
                 success: 0,
-                msg: err
-            })
-        }
-
-        return res.status(200).json({
-            success: 1,
-            msg: results
-        })
-    });
-}
-
-const getStockAmountByStockTransfer = (req, res) => {
-    const body = req.body;
-
-    body.productId = req.params.productId;
-
-    body.routeId = req.params.routeId;
-
-    getStockAmountByRoute(body, (err, results) => {
-        if (err) {
-            return res.status(500).json({
-                success: 0,
-                msg: err
+                msg: 'Database error!'
             })
         }
 
         if (!results) {
-            return res.status(404).json({
+            res.status(404).json({
                 success: 0,
-                msg: "Record not found"
+                msg: 'Record not found!'
             })
         } else {
-            return res.status(200).json({
+            res.status(200).json({
                 success: 1,
-                msg: results
+                data: results
             })
         }
-    });
+    })
 }
 
+const getStockTransferByProductIdAndRouteId = (req, res) => {
+    const body = req.body;
+
+    body.productId = req.params.productId;
+    body.routeId = req.params.routeId;
+
+    stockTransferByRouteIdAndProductId(body, (err, results) => {
+        if (err) {
+            console.log(err);
+
+            res.status(500).json({
+                success: 0,
+                msg: 'Database error!'
+            })
+        }
+
+        if (!results) {
+            res.status(404).json({
+                success: 0,
+                msg: 'Record not found!'
+            })
+        } else {
+            res.status(200).json({
+                success: 1,
+                data: results
+            })
+        }
+    })
+}
+
+const updateStockTransfer = (req, res) => {
+
+
+    const dateTime = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Colombo' });
+
+    const body = req.body;
+    body.stockTransferId = req.params.id;
+
+    stockTransferById(body.stockTransferId, (err, resultsStockTransferById) => {
+
+        body.productId = resultsStockTransferById.productId;
+        body.id = resultsStockTransferById.id;
+
+        if (resultsStockTransferById.qty != body.qty) {
+
+            if (resultsStockTransferById.qty > body.qty) {
+
+                stockByProductId(body.productId, (err, resultsByProductWise) => {
+
+                    body.stockId = resultsByProductWise[0].id;
+                    body.stockQty = resultsByProductWise[0].qty + (resultsStockTransferById.qty - body.qty);
+                    body.updated_at = dateTime;
+
+
+                    updateStockQty(body, (err, resultsForUpdateStock) => {
+                        if (err) {
+                            console.log(err);
+
+                            res.status(500).json({
+                                success: 0,
+                                msg: 'Database error by update stock!',
+                                error: err
+                            })
+                        }
+                    })
+
+
+                    // body.updated_at = null;
+
+                    updateStockTransferQty(body, (err, results) => {
+
+                        if (err) {
+                            console.log(err);
+
+                            res.status(500).json({
+                                success: 0,
+                                msg: 'Database error!'
+                            })
+                        }
+
+                        if (!results) {
+                            res.status(404).json({
+                                success: 0,
+                                msg: 'Record not found!'
+                            })
+                        } else {
+                            res.status(200).json({
+                                success: 1,
+                                data: results
+                            })
+
+                        }
+                    })
+
+                })
+
+            } else {
+
+
+                //////////////////////////////
+
+                stockByProductId(body.productId, (err, resultsByProductWise) => {
+
+                    let remainingWastageStock = (body.qty - resultsStockTransferById.qty);
+
+                    for (i = 0; i < resultsByProductWise.length; i++) {
+
+                        if (remainingWastageStock == resultsByProductWise[i].qty) {
+
+                            body.stockId = resultsByProductWise[i].id;
+                            body.stockQty = 0;
+                            body.updated_at = dateTime;
+
+
+                            updateStockQty(body, (err, resultsForUpdateStock) => {
+                                if (err) {
+                                    console.log(err);
+
+                                    res.status(500).json({
+                                        success: 0,
+                                        msg: 'Database error by update stock!',
+                                        error: err
+                                    })
+                                }
+                            })
+
+                            remainingWastageStock = 0;
+
+                            i = resultsByProductWise.length;
+
+                        } else if (remainingWastageStock < resultsByProductWise[i].qty && remainingWastageStock > 0) {
+
+                            body.stockId = resultsByProductWise[i].id;
+                            body.stockQty = resultsByProductWise[i].qty - remainingWastageStock;
+                            body.updated_at = dateTime;
+
+                            updateStockQty(body, (err, resultsForUpdateStock) => {
+                                if (err) {
+                                    console.log(err);
+
+                                    res.status(500).json({
+                                        success: 0,
+                                        msg: 'Database error by update stock!',
+                                        error: err
+                                    })
+                                }
+                            })
+
+                            remainingWastageStock = 0;
+
+                            i = resultsByProductWise.length;
+
+                        } else if (remainingWastageStock > resultsByProductWise[i].qty) {
+
+
+                            body.stockId = resultsByProductWise[i].id;
+                            body.stockQty = 0;
+                            body.updated_at = dateTime;
+
+                            updateStockQty(body, (err, resultsForUpdateStock) => {
+                                if (err) {
+                                    console.log(err);
+
+                                    res.status(500).json({
+                                        success: 0,
+                                        msg: 'Database error by update stock!',
+                                        error: err
+                                    })
+                                }
+
+
+                            })
+
+                            remainingWastageStock = remainingWastageStock - resultsByProductWise[i].qty;
+                        }
+                    }
+
+
+
+                    updateStockTransferQty(body, (err, results) => {
+
+                        if (err) {
+                            console.log(err);
+
+                            res.status(500).json({
+                                success: 0,
+                                msg: 'Database error!'
+                            })
+                        }
+
+                        if (!results) {
+                            res.status(404).json({
+                                success: 0,
+                                msg: 'Record not found!'
+                            })
+                        } else {
+                            res.status(200).json({
+                                success: 1,
+                                data: results
+                            })
+
+                        }
+                    })
+                })
+
+                /////////////////////////////
+            }
+
+        } else {
+            res.status(400).json({
+                success: 0,
+                msg: 'Nothing to change!'
+            })
+        }
+    })
+}
+
+
 module.exports = {
-    createStockTransfer,
+    addStockTransfer,
+    getAllStockTransfer,
     getStockTransferById,
-    getAllTransfer,
-    getStockAmountByStockTransfer,
-    updateStockTransfer
+    getStockTransferByProductIdAndRouteId,
+    updateStockTransfer,
 }

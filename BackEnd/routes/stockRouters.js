@@ -3,22 +3,26 @@ const { checkToken } = require("../middleware/auth")
 
 const {
     createStock,
-    getAllMainStock,
+    getAllStocks,
     getStockById,
-    updateStock,
-    getSumAllProductWise,
+    getStockByProductId,
+    getStockQtySumById,
+    updateQtyById,
+    updateRecievedById,
+    setRejectStock,
     deleteStock,
-    getStockByRoute,
-    getStockAmountByRouteProduct
+    getStockAmountGroupByProductId
 } = require('../controllers/sotckController');
 
 router.post('/', checkToken, createStock);
-router.get('/', checkToken, getAllMainStock);
-router.get('/getAllStockProduct', checkToken, getSumAllProductWise);
-router.post('/amount', checkToken, getStockAmountByRouteProduct);
+router.get('/', checkToken, getAllStocks);
+router.get('/stock-amount-group-by-product', checkToken, getStockAmountGroupByProductId);
+router.get('/qty-sum/:id', checkToken, getStockQtySumById);
+router.get('/product-wise/:productId', checkToken, getStockByProductId);
 router.get('/:id', checkToken, getStockById);
-router.get('/route/:routeId', checkToken, getStockByRoute);
-router.delete('/:id', checkToken, deleteStock);
-router.patch('/:id', checkToken, updateStock);
+router.patch('/qty/:id', checkToken, updateQtyById);
+router.patch('/recieved/:id', checkToken, updateRecievedById);
+router.patch('/reject/:id', checkToken, setRejectStock);
+router.patch('/delete/:id', checkToken, deleteStock);
 
 module.exports = router;

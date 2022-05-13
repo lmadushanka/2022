@@ -15,6 +15,8 @@ const customerRouter = require("./routes/customerRoutes");
 const stockTransfer = require("./routes/stockTransferRoutes");
 const salesRouter = require("./routes/salesRoutes");
 const customerHistoryRouter = require("./routes/customerHistoryRouter");
+const wastageRouter = require("./routes/wastageStockRoutes");
+const stockReturnRouter = require("./routes/stockReturnRouters");
 
 app.use(cors({
     origin: "*"
@@ -29,8 +31,10 @@ app.use("/api/v1/login/", loginRouter);
 app.use("/api/v1/route/", routeRouter);
 app.use("/api/v1/product/", productRouter);
 app.use("/api/v1/stock/", stockRouter);
+app.use("/api/v1/stock-transfer/", stockTransfer);
+app.use("/api/v1/stock-return/", stockReturnRouter);
+app.use("/api/v1/wastage/", wastageRouter);
 app.use("/api/v1/customer/", customerRouter);
-app.use("/api/v1/stockTransfer/", stockTransfer);
 app.use("/api/v1/sales/", salesRouter);
 app.use("/api/v1/customer-history/", customerHistoryRouter);
 

@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.checkValidation();
+    this.checkValidation();
 
     // window.location.reload();
 

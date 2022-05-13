@@ -9,9 +9,9 @@
                             <button type="button" routerLink="/dashboard/add-stockTransfer"
                                 class="btn btn-sm btn-block btn-outline-primary">Add</button>
                         </div>
-<div class="col-sm-2">
-    <button type="button" (click)="printStock()" class="btn btn-sm btn-block btn-outline-warning">Print</button>
-</div>
+                        <div class="col-sm-2">
+                            <button type="button" (click)="printStock()" class="btn btn-sm btn-block btn-outline-warning">Print</button>
+                            </div>
                     </div>
 
 
@@ -36,8 +36,7 @@
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" [(ngModel)]="searchText" name="search" class="form-control float-right"
-                                        placeholder="Search">
+                                    <input type="text" [(ngModel)]="searchText" name="search" class="form-control float-right" placeholder="Search">
 
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-default">
@@ -58,7 +57,7 @@
                                         <th>Product Name</th>
                                         <th>Stock</th>
                                         <th>Date</th>
-                                        <th>Action</th>
+                                        <th width="5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="dataArrayLength == 0">
@@ -86,19 +85,21 @@
                                         <td>{{arr.date}}</td>
                                         <td>
                                             <div class="row">
-                                        
+
                                                 <div class="col">
                                                     <button type="button" (click)="editStockTransfer(arr.id)"
-                                                        class="btn btn-block btn-sm btn-outline-success"><i class="nav-icon fas fa-pen"></i>
+                                                        class="btn btn-block btn-sm btn-outline-success"><i
+                                                            class="nav-icon fas fa-pen"></i>
                                                     </button>
                                                 </div>
                                                 <div class="col">
                                                     <button type="button" (click)="deleteStockTransfer(arr.id)"
-                                                        class="btn btn-block btn-sm btn-outline-danger"><i class="nav-icon fas fa-trash"></i>
+                                                        class="btn btn-block btn-sm btn-outline-danger"><i
+                                                            class="nav-icon fas fa-trash"></i>
                                                     </button>
                                                 </div>
-                                        
-                                        
+
+
                                             </div>
                                         </td>
                                     </tr>

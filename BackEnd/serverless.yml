@@ -1,12 +1,12 @@
-service: aws-api
+service: jpfruit
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs14.x
-  memorySize: 512
+  memorySize: 128
   timeout: 15
-  stage: production
+  stage: dev1
   region: us-east-1
 
 functions:

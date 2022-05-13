@@ -60,8 +60,10 @@
                                         <th>Product Code</th>
                                         <th>Product Name</th>
                                         <th>Current Stock</th>
-                                        <th>Date</th>
-                                        <th width="10%">Action</th>
+                                        <th>Status</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
+                                        <th width="5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngIf="dataArrayLength == 0">
@@ -83,13 +85,21 @@
                                     <tr>
                                         <td>{{arr.productCode}}</td>
                                         <td>{{arr.productName}}</td>
-                                        <td>{{arr.stock}}</td>
-                                        <td>{{arr.added_at}}</td>
+                                        <td>{{arr.qty}}</td>
+                                        <td style="cursor: pointer;" *ngIf="arr.status == 2" (click)="onApprove(arr.id, arr.qty)"><span
+                                                class="right badge badge-warning">Pending</span>
+                                        </td>
+                                        <td style="cursor: no-drop;" *ngIf="arr.status ==1"><span class="right badge badge-success">Approved</span>
+                                        </td>
+                                        <td style="cursor: no-drop;" *ngIf="arr.status ==3"><span class="right badge badge-danger">Rejected</span>
+                                        </td>
+                                        <td>{{arr.created_at}}</td>
+                                        <td>{{arr.updated_at}}</td>
                                         <td>
                                             <div class="row">
 
                                                 <div class="col">
-                                                    <button type="button" (click)="editStock(arr.id, arr.productName)"
+                                                    <button *ngIf="arr.status !=1" type="button" (click)="editStock(arr.id, arr.productName)"
                                                         class="btn btn-block btn-sm btn-outline-success"><i
                                                             class="nav-icon fas fa-pen"></i>
                                                     </button>

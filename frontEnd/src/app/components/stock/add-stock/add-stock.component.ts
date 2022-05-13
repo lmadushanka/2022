@@ -22,7 +22,7 @@ export class AddStockComponent implements OnInit {
 
   productArray:any = [];
 
-  stockModule = new StockModule('','','','','','','');
+  stockModule = new StockModule('','','','','','','','');
 
   constructor( 
     private fb:FormBuilder,
@@ -41,18 +41,6 @@ export class AddStockComponent implements OnInit {
   ngOnInit(): void {
     this.getAllRoute();
     this.getAllProduct();
-
-    const date:any = new Date().toLocaleDateString().split('/');
-
-    if(date[0].length == 1){
-      date[0] = '0'+date[0];
-    }
-
-    if(date[1].length == 1){
-      date[1] = '0'+date[1];
-    }
-
-    this.finalDate =  date[1]+'/'+date[0]+'/'+date[2];
   }
 
   quantities() : FormArray{
@@ -77,14 +65,9 @@ export class AddStockComponent implements OnInit {
 
   onSubmit(){
 
-    this.stockModule.productId = this.stockForm.value.productId;
-    this.stockModule.stock = this.stockForm.value.stock;
+    this.stockModule.product_id = this.stockForm.value.productId;
+    this.stockModule.qty = this.stockForm.value.stock;
     
-
-    
-
-
-
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't to add this!",
@@ -99,10 +82,8 @@ export class AddStockComponent implements OnInit {
           localStorage.setItem('successStockAdded','1');
 
           for( let i = 0; i < this.stockForm.value.stock.length; i++){
-            this.stockModule.productId = this.stockForm.value.stock[i].productId;
-            this.stockModule.stock = this.stockForm.value.stock[i].stockAmount;
-            this.stockModule.status = 1;
-            this.stockModule.added_at = this.finalDate;
+            this.stockModule.product_id = this.stockForm.value.stock[i].productId;
+            this.stockModule.qty = this.stockForm.value.stock[i].stockAmount;
             
 
             this.stockService.createStock(this.stockModule).subscribe((res) =>{

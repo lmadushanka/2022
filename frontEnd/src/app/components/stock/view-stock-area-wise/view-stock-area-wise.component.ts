@@ -37,8 +37,11 @@ export class ViewStockAreaWiseComponent implements OnInit {
 
       this.dataArray = res.data;
 
+      console.log(res);
+      
+
       for(let i = 0; i < res.data.length; i++){
-        this.productService.getProductById(this.dataArray[i].productId).subscribe((res) =>{
+        this.productService.getProductById(this.dataArray[i].product_id).subscribe((res) =>{
           
           this.dataArray[i].productName = res.data.productName;
 

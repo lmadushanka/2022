@@ -51,20 +51,32 @@ export class StockService {
     return this.http.post(stockTransferUrl, stockModule, httpOptions);
   }
 
-  update(stockModule: StockModule, id: any):Observable<any>{
-    let stockUrl = this.baseUrl.Url+'stock/'+id;
+  updateQty(stockModule: StockModule, id: any):Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock/qty/'+id;
+
+    return this.http.patch(stockUrl, stockModule, httpOptions);
+  }
+
+  updateRecieved(stockModule: StockModule,id:any):Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock/recieved/'+id;
+
+    return this.http.patch(stockUrl, stockModule, httpOptions);
+  }
+
+  rejectStock(stockModule: StockModule,id:any):Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock/reject/'+id;
 
     return this.http.patch(stockUrl, stockModule, httpOptions);
   }
 
   delete(id:any):Observable<any>{
-    let stockUrl = this.baseUrl.Url+'stock/'+ id;
+    let stockUrl = this.baseUrl.Url+'stock/delete/'+ id;
 
-    return this.http.delete(stockUrl, httpOptions);
+    return this.http.patch(stockUrl, StockModule, httpOptions);
   }
 
   getAllSum():Observable<any>{
-    let stockUrl = this.baseUrl.Url+'stock/getAllStockProduct';
+    let stockUrl = this.baseUrl.Url+'stock/stock-amount-group-by-product';
 
     return this.http.get(stockUrl, httpOptions);
   }

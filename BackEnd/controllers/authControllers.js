@@ -10,7 +10,7 @@ const login = async (req, res) => {
     const body = req.body;
     getUserByUserEmail(body.email, (err, results) => {
 
-        if (err) {
+        if (err) { 
             console.log(err);
         }
 

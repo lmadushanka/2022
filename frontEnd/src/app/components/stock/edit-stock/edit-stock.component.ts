@@ -14,7 +14,7 @@ export class EditStockComponent implements OnInit {
   productName:any;
   stock:any;
 
-  stockModule = new StockModule('','','','','','','');
+  stockModule = new StockModule('','','','','','','','');
 
   constructor(
     private stockService: StockService,
@@ -31,15 +31,14 @@ export class EditStockComponent implements OnInit {
   getStockById(){
     this.stockService.getStockById(localStorage.getItem('stockIdForEditStock')).subscribe((res) =>{
 
-      this.stock = res.data.stock;
+      this.stock = res.data.qty;
       
     })
   }
 
   update(){
 
-    this.stockModule.stock = this.stock;
-    this.stockModule.status = 1;
+    this.stockModule.qty = this.stock;
 
 
     Swal.fire({
@@ -53,7 +52,7 @@ export class EditStockComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.stockService.update(this.stockModule, localStorage.getItem('stockIdForEditStock')).subscribe((res) =>{
+        this.stockService.updateQty(this.stockModule, localStorage.getItem('stockIdForEditStock')).subscribe((res) =>{
     
           if(res.success == 1){
             this.router.navigateByUrl('dashboard/stock');
