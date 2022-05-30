@@ -31,18 +31,13 @@ export class StockService {
     return this.http.get(stockUrl, httpOptions);
   }
 
-  getStockByRoute(routeId:any):Observable<any>{
-    let stockUrl = this.baseUrl.Url+'stock/route/'+ routeId;
-
-    return this.http.get(stockUrl, httpOptions);
-  }
-
+  
   getStockById(id:any):Observable<any>{
     let stockUrl = this.baseUrl.Url+'stock/'+id;
-
+    
     return this.http.get(stockUrl, httpOptions);
   }
-
+  
   getStockAmount(stockModule:any):Observable<any>{
 
     let stockTransferUrl = this.baseUrl.Url + 'stock/amount';
@@ -78,6 +73,12 @@ export class StockService {
   getAllSum():Observable<any>{
     let stockUrl = this.baseUrl.Url+'stock/stock-amount-group-by-product';
 
+    return this.http.get(stockUrl, httpOptions);
+  }
+
+  getStockByRoute(routeId:any):Observable<any>{
+    let stockUrl = this.baseUrl.Url+'stock-transfer/route-by/'+ routeId;
+  
     return this.http.get(stockUrl, httpOptions);
   }
 }

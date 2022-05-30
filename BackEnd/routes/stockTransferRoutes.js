@@ -6,11 +6,13 @@ const {
     getAllStockTransfer,
     updateStockTransfer,
     getStockTransferById,
-    getStockTransferByProductIdAndRouteId
+    getStockTransferByProductIdAndRouteId,
+    getStockTransferQtySumGroupByProductId
 } = require('../controllers/stockTransferControllers');
 
 router.post('/', checkToken, addStockTransfer);
 router.get('/', checkToken, getAllStockTransfer);
+router.get('/route-by/:routeId', checkToken, getStockTransferQtySumGroupByProductId);
 router.get('/:id', checkToken, getStockTransferById);
 router.get('/:productId/:routeId', checkToken, getStockTransferByProductIdAndRouteId);
 router.patch('/:id', checkToken, updateStockTransfer);

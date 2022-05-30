@@ -125,6 +125,17 @@ const updateStockQty = async (data, callBack) => {
     )
 }
 
+const stockTransferQtySumGroupByProductId = async (id, callBack) => {
+    await con.query(
+        `SELECT productId, SUM(qty) AS qty FROM stocktransfer WHERE routeId = ?  AND deleted_at IS NULL GROUP BY productId`,
+        [id],
+        (err, results, fields) => {
+            if (err) return callBack(err);
+            return callBack(null, results);
+        }
+    )
+}
+
 module.exports = {
     create,
     allStockTransfer,
@@ -133,4 +144,5 @@ module.exports = {
     stockTransferSumByProductIdAndRouteId,
     updateStockTransferQty,
     updateStockQty,
+    stockTransferQtySumGroupByProductId
 }

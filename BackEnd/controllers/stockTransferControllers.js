@@ -10,6 +10,7 @@ const {
     stockTransferByRouteIdAndProductId,
     updateStockTransferQty,
     updateStockQty,
+    stockTransferQtySumGroupByProductId
 } = require('../service/stockTransferService');
 
 const addStockTransfer = (req, res) => {
@@ -419,6 +420,18 @@ const updateStockTransfer = (req, res) => {
     })
 }
 
+const getStockTransferQtySumGroupByProductId = (req, res) => {
+    const id = req.params.routeId;
+
+    stockTransferQtySumGroupByProductId(id, (err, results) => {
+        if (err) console.log(err), res.status(500).json({ success: 0, msg: 'Database error' });
+
+        if (!results) res.status(404).json({ success: 0, msg: 'Records not found' });
+        else
+            res.status(200).json({ success: 1, data: results });
+    })
+}
+
 
 module.exports = {
     addStockTransfer,
@@ -426,4 +439,5 @@ module.exports = {
     getStockTransferById,
     getStockTransferByProductIdAndRouteId,
     updateStockTransfer,
+    getStockTransferQtySumGroupByProductId
 }
